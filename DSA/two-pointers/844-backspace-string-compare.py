@@ -67,9 +67,8 @@ class Solution:
                 else:
                     # Found valid character that won't be deleted
                     return i
-                idx -= 1
             # No valid character found
-            return idx
+            return -1
 
         # Start from the end of both strings
         i, j = len(s) - 1, len(t) - 1
