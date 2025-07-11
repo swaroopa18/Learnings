@@ -16,7 +16,8 @@
 04. [92-reverse-linked-list-II](../DSA/LinkedList/92-M-reverse-linked-list-II.py)
 
 # Backtracking
-01. [78-subsets](../DSA/backtrack/78-subsets.py)
+01. [78-subsets](../DSA/backtrack/78-M-subsets.py)
+02. [22-generate-parentheses](../DSA/backtrack/22-M-generate-parentheses.py)
 
 # Dynamic programming
 01. [121-buy-sell-stock](../DSA/DP/121-buy-sell-stock.py)

@@ -30,3 +30,30 @@ class Solution:
             head = temp
         return revList
    
+
+# TC: O(n) SC: O(n)
+class Solution:
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if head is None or head.next is None:
+            return head
+        new_head = self.reverseList(head.next)
+
+        head.next.next = head
+        head.next = None
+        return new_head
+    
+# TC: O(n) SC: O(n)
+class Solution:
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        stack = []
+        while head:
+            stack.append(head)
+            head = head.next
+        dummy = ListNode(0)
+        curr = dummy
+        while stack:
+            node = stack.pop()
+            curr.next = node
+            curr = curr.next
+        curr.next = None
+        return dummy.next
