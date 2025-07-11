@@ -10,9 +10,10 @@
 04. [238-product-of-array-except-itself](../DSA/arrays/238-product-of-array-except-itself.py)
 
 # LinkedList
-01. [2-add-two-linked-lists](../DSA/LinkedList/2-[M]-add-two-linked-lists.py)
-01. [206-reverse-linked-list](../DSA/LinkedList/206-[M]-reverse-linked-list.py)
-01. [21-merge-two-sorted-lists](../DSA/LinkedList/21-[E]-merge-two-sorted-lists.py)
+01. [2-add-two-linked-lists](../DSA/LinkedList/2-M-add-two-linked-lists.py)
+02. [206-reverse-linked-list](../DSA/LinkedList/206-M-reverse-linked-list.py)
+03. [21-merge-two-sorted-lists](../DSA/LinkedList/21-E-merge-two-sorted-lists.py)
+04. [92-reverse-linked-list-II](../DSA/LinkedList/92-M-reverse-linked-list-II.py)
 
 # Backtracking
 01. [78-subsets](../DSA/backtrack/78-subsets.py)
