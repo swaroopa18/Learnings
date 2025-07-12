@@ -18,6 +18,7 @@
 # Backtracking
 01. [78-subsets](../DSA/backtrack/78-M-subsets.py)
 02. [22-generate-parentheses](../DSA/backtrack/22-M-generate-parentheses.py)
+03. [42-M-permutaions](../DSA/backtrack/42-M-permutaions.py)
 
 # Dynamic programming
 01. [121-buy-sell-stock](../DSA/DP/121-buy-sell-stock.py)
