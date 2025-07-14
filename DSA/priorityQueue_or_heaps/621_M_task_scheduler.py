@@ -64,39 +64,25 @@ class SolutionOptimized:
         Time: O(time * log(unique_tasks)) where time is the result
         Space: O(unique_tasks)
         """
-        if n == 0:
-            return len(tasks)
-        
-        # Count task frequencies
-        task_count = Counter(tasks)
-        
-        # Max heap (use negative values)
-        heap = [-count for count in task_count.values()]
-        heapq.heapify(heap)
-        
-        time = 0
-        
-        while heap:
-            # Try to execute tasks in current cycle
-            cycle = []
-            
-            # Execute up to n+1 tasks (to fill one complete cycle)
-            for _ in range(n + 1):
-                if heap:
-                    cycle.append(-heapq.heappop(heap))
-                
-            # Put back tasks that still have remaining executions
-            for count in cycle:
-                if count > 1:
-                    heapq.heappush(heap, -(count - 1))
-            
-            # Add time for this cycle
-            # If heap is empty, we only need time for executed tasks
-            # If heap has tasks, we need full cycle time (n+1)
-            time += len(cycle) if not heap else n + 1
-        
-        return time
+        task_freq = {}
+        for task in tasks:
+            task_freq[task] = task_freq.get(task, 0) + 1
 
+        max_heap = [-count for count in task_freq.values()]
+        heapq.heapify(max_heap)
+        currentTime = 0
+
+        while max_heap:
+            cycle = []
+            for _ in range(n + 1):
+                if max_heap:
+                    cycle.append(heapq.heappop(max_heap))
+            for count in cycle:
+                if count + 1 < 0:
+                    heapq.heappush(max_heap, count + 1)
+            currentTime += len(cycle) if not max_heap else n + 1
+
+        return currentTime
 
 class SolutionMath:
     def leastInterval(self, tasks: List[str], n: int) -> int:
