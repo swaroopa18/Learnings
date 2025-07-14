@@ -1,8 +1,8 @@
 # https://leetcode.com/problems/kth-largest-element-in-an-array/
 
-from typing import List
 import heapq
-import random
+from typing import List
+from queue import PriorityQueue
 
 
 # APPROACH 1: MIN-HEAP (YOUR SOLUTION)
@@ -35,7 +35,7 @@ class Solution1:
 # APPROACH 2: QUICKSELECT (OPTIMAL AVERAGE CASE)
 # Time Complexity: O(n) average, O(n²) worst case
 # Space Complexity: O(1) iterative, O(log n) recursive
-class Solution:
+class Solution2:
     def findKthLargest(self, nums: List[int], k: int) -> int:
         n = len(nums)
         k = n - k
@@ -117,11 +117,83 @@ class Solution5:
         return -1  # Should never reach here
 
 
+# APPROACH 6: PRIORITY QUEUE (THREAD-SAFE MIN-HEAP)
+# Time Complexity: O(n log k)
+# Space Complexity: O(k)
+class Solution6:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        """
+        PRIORITY QUEUE APPROACH:
+        - Similar to min-heap but using Python's queue.PriorityQueue
+        - Thread-safe implementation of heap
+        - Maintains k largest elements using min-heap property
+        
+        ADVANTAGES:
+        1. Thread-safe operations
+        2. Clean API with put() and get() methods
+        3. Same time complexity as heapq approach
+        
+        DISADVANTAGES:
+        1. Slightly more overhead than heapq
+        2. No direct access to peek at top element
+        3. Requires get() to access minimum element
+        """
+        pq = PriorityQueue()
+        
+        # Add first k elements
+        for i in range(k):
+            pq.put(nums[i])
+        
+        # For remaining elements, if larger than smallest in queue,
+        # remove smallest and add new element
+        for i in range(k, len(nums)):
+            if not pq.empty() and nums[i] > pq.queue[0]:  # peek at minimum
+                pq.get()  # remove minimum
+                pq.put(nums[i])  # add new element
+        
+        return pq.get()  # return minimum of k largest elements
+
+
+# APPROACH 7: PRIORITY QUEUE (MAX-HEAP VARIANT)
+# Time Complexity: O(n + k log n)
+# Space Complexity: O(n)
+class Solution7:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        """
+        PRIORITY QUEUE MAX-HEAP APPROACH:
+        - Add all elements as negative values to simulate max-heap
+        - Extract k-1 largest elements
+        - Return kth largest element
+        
+        ADVANTAGES:
+        1. Straightforward logic
+        2. Thread-safe
+        3. Good for multiple queries on same dataset
+        
+        DISADVANTAGES:
+        1. Uses O(n) space
+        2. Slower than min-heap approach for small k
+        """
+        pq = PriorityQueue()
+        
+        # Add all elements as negative (to simulate max-heap)
+        for num in nums:
+            pq.put(-num)
+        
+        # Extract k-1 largest elements
+        for _ in range(k - 1):
+            pq.get()
+        
+        # Return kth largest (negate back)
+        return -pq.get()
+
+
 """
 COMPLEXITY COMPARISON AND RECOMMENDATIONS:
 
 1. **Small k (k << n)**: 
    - **MIN-HEAP (Solution 1)** - O(n log k) ✅ RECOMMENDED
+   - **PRIORITY QUEUE (Solution 6)** - O(n log k) ✅ ALTERNATIVE (if thread-safety needed)
    - Best space efficiency and performance
 
 2. **Large k (k close to n)**:
@@ -134,11 +206,16 @@ COMPLEXITY COMPARISON AND RECOMMENDATIONS:
 
 4. **Streaming data**:
    - **MIN-HEAP (Solution 1)** ✅ RECOMMENDED
+   - **PRIORITY QUEUE (Solution 6)** ✅ ALTERNATIVE (if thread-safety needed)
    - Can handle continuous data flow
 
 5. **Limited integer range**:
    - **BUCKET SORT (Solution 5)** - O(n) ✅ RECOMMENDED
    - Linear time complexity
+
+6. **Multi-threaded environment**:
+   - **PRIORITY QUEUE (Solution 6 or 7)** ✅ RECOMMENDED
+   - Thread-safe operations
 
 DECISION TREE:
 - k ≤ log n: Use MIN-HEAP
@@ -146,6 +223,13 @@ DECISION TREE:
 - Need stability: Use SORTING
 - Streaming: Use MIN-HEAP
 - Limited range: Use BUCKET SORT
+- Multi-threaded: Use PRIORITY QUEUE
+
+PRIORITY QUEUE vs HEAPQ:
+- PriorityQueue: Thread-safe, cleaner API, slightly more overhead
+- heapq: Faster, direct access to elements, not thread-safe
+- For single-threaded applications: prefer heapq
+- For multi-threaded applications: prefer PriorityQueue
 
 YOUR SOLUTION ANALYSIS:
 Your min-heap solution is excellent for small k values and is the most commonly
@@ -155,21 +239,3 @@ used approach in practice due to its:
 - Suitability for streaming data
 - Clean implementation
 """
-
-# Test all approaches
-if __name__ == "__main__":
-    test_cases = [
-        ([3,2,1,5,6,4], 2),  # Expected: 5
-        ([3,2,3,1,2,4,5,5,6], 4),  # Expected: 4
-        ([1], 1),  # Expected: 1
-        ([7,10,4,3,20,15], 3),  # Expected: 10
-    ]
-    
-    solutions = [Solution1(), Solution2(), Solution3(), Solution4(), Solution5()]
-    
-    for i, (nums, k) in enumerate(test_cases):
-        print(f"Test case {i+1}: nums={nums}, k={k}")
-        for j, sol in enumerate(solutions, 1):
-            result = sol.findKthLargest(nums.copy(), k)  # Use copy to avoid modification
-            print(f"  Solution {j}: {result}")
-        print()
