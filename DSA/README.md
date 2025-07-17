@@ -24,6 +24,7 @@
 03. [17-letter-combination](../DSA/backtrack/17-M-letter-combination.py)
 03. [39-combination-sum](../DSA/backtrack/39-M-combination-sum.py)
 03. [40-combination-sum-II](../DSA/backtrack/40-M-combination-sum-II.py)
+03. [301-remove-invalid-brackets](../DSA/backtrack/301-M-remove-invalid-brackets.py)
 
 # Dynamic programming
 01. [121-buy-sell-stock](../DSA/DP/121-buy-sell-stock.py)
