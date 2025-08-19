@@ -30,3 +30,8 @@
 01. [121-buy-sell-stock](../DSA/DP/121-buy-sell-stock.py)
 02. [122-buy-sell-stock-II](../DSA/DP/122-buy-sell-stock-II.py)
 03. [714-buy-sell-stock-transaction-fee](../DSA/DP/714-buy-sell-stock-transaction-fee.py)
+03. [70-climbing-stairs](../DSA/DP/70-climbing-stairs.py)
+
+# Graphs
+
+01. [547-no-of-provinces](../DSA/graphs/547_no_of_provinces.py)
