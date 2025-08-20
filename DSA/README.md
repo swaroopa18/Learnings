@@ -33,10 +33,11 @@
 04. [509-fibonacci-number](../DSA/DP/509-fibonnacci-number.py)
 05. [714-buy-sell-stock-transaction-fee](../DSA/DP/714-buy-sell-stock-transaction-fee.py)
 06. [1137-tribonacci](../DSA/DP/1137-tribonacci.py)
-06. [746-cost-of-climbing-stairs](../DSA/DP/746-cost-of-climbing-stairs.py)
+07. [746-cost-of-climbing-stairs](../DSA/DP/746-cost-of-climbing-stairs.py)
 
 # Graphs
 01. [547-no-of-provinces](../DSA/graphs/547_no_of_provinces.py)
+02. [802-safe-nodes](../DSA/graphs/802-safe-nodes.py)
 
 # Trees
 01. [100-same-tree](../DSA/tree/100-same-tree.py)
