@@ -34,6 +34,7 @@
 05. [714-buy-sell-stock-transaction-fee](../DSA/DP/714-buy-sell-stock-transaction-fee.py)
 06. [1137-tribonacci](../DSA/DP/1137-tribonacci.py)
 07. [746-cost-of-climbing-stairs](../DSA/DP/746-cost-of-climbing-stairs.py)
+08. [198-house-robber](../DSA/DP/198-house-robber.py)
 
 # Graphs
 01. [547-no-of-provinces](../DSA/graphs/547_no_of_provinces.py)
