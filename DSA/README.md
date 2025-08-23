@@ -37,6 +37,7 @@
 08. [198-house-robber](../DSA/DP/198-house-robber.py)
 09. [213-house-robber-II](../DSA/DP/213-house-robber-II.py)
 10. [740-delete-and-earn](../DSA/DP/740-delete-and-earn.py)
+11. [62-unique-paths](../DSA/DP/62-unique-paths.py)
 
 # Graphs
 01. [547-no-of-provinces](../DSA/graphs/547_no_of_provinces.py)
