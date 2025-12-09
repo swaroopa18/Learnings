@@ -114,6 +114,29 @@ class Solution4:
         
         return head
 
+class Solution5:
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        dummy = ListNode(0)
+        dummy.next = head
+        slow = fast = dummy
+        count = 0
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+            count += 1
+
+        size = count * 2 if fast == None else (count * 2) + 1
+        nodeToDelete = size - n - 1
+        slow = slow if nodeToDelete > count else dummy
+        count = count if nodeToDelete > count else 0
+
+        while slow and slow.next:
+            if nodeToDelete == count:
+                slow.next = slow.next.next
+            slow = slow.next
+            count += 1
+        return dummy.next
+        
 """
 COMPLEXITY ANALYSIS SUMMARY:
 
