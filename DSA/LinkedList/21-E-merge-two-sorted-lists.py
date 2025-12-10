@@ -4,6 +4,9 @@
 from typing import Optional
 
 
+# ============================================================================
+# SOLUTION 1: Iteration TC: O(n+m), SC: O(1)
+# ============================================================================
 class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
@@ -27,3 +30,27 @@ class Solution:
         if list2:
             tail.next = list2
         return dummy.next
+
+# ============================================================================
+# SOLUTION 1: Recursion TC: O(n+m), SC: O(n+m)
+# ============================================================================
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution2:
+    def mergeTwoLists(
+        self, list1: Optional[ListNode], list2: Optional[ListNode]
+    ) -> Optional[ListNode]:
+        if list1 is None:
+            return list2
+        if list2 is None:
+            return list1
+        if list1.val > list2.val:
+            list2.next = self.mergeTwoLists(list1, list2.next)
+            return list2
+        else:
+            list1.next = self.mergeTwoLists(list1.next, list2)
+            return list1
