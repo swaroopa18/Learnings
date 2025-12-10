@@ -16,6 +16,7 @@
 03. [21-merge-two-sorted-lists](../DSA/LinkedList/21-E-merge-two-sorted-lists.py)
 04. [92-reverse-linked-list-II](../DSA/LinkedList/92-M-reverse-linked-list-II.py)
 05. [206-reverse-linked-list](../DSA/LinkedList/206-M-reverse-linked-list.py)
+06. [24-swap-nodes-in-pairs](../DSA/LinkedList/24-swap-nodes-in-pairs.py)
 
 # Backtracking
 01. [17-letter-combination](../DSA/backtrack/17-M-letter-combination.py)
