@@ -19,6 +19,7 @@
 06. [24-swap-nodes-in-pairs](../DSA/LinkedList/24-swap-nodes-in-pairs.py)
 07. [141-linked-list-cycle](../DSA/LinkedList/141-linked-list-cycle.py)
 07. [142-linked-list-cycle-II](../DSA/LinkedList/142-linked-list-cycle-II.py)
+07. [160-intersection-node](../DSA/LinkedList/160-intersection-node.py)
 
 # Backtracking
 01. [17-letter-combination](../DSA/backtrack/17-M-letter-combination.py)
