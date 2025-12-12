@@ -151,6 +151,60 @@ class Solution3:
 
 
 # ============================================================================
+# APPROACH 4: OPTIMIZED WITH LIST RESTORATION (BEST PRACTICE)
+# ============================================================================
+class Solution:
+    def isPalindrome(self, head: Optional[ListNode]) -> bool:
+        """
+        Same as Solution2 but RESTORES the list structure after checking.
+        This is important if the list is used elsewhere!
+        
+        TC: O(n)
+        SC: O(1)
+        """
+        if not head or not head.next:
+            return True
+        
+        # Find middle
+        slow = fast = head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+        
+        # Reverse second half
+        prev = None
+        curr = slow
+        while curr:
+            next_node = curr.next
+            curr.next = prev
+            prev = curr
+            curr = next_node
+        
+        # Compare and track result
+        is_palindrome = True
+        first = head
+        second = prev  # prev is now head of reversed second half
+        
+        while second:
+            if first.val != second.val:
+                is_palindrome = False
+                break  # Can break early but still need to restore
+            first = first.next
+            second = second.next
+        
+        # RESTORE: Reverse the second half back
+        prev_restore = None
+        curr = prev
+        while curr:
+            next_node = curr.next
+            curr.next = prev_restore
+            prev_restore = curr
+            curr = next_node
+        
+        return is_palindrome
+
+
+# ============================================================================
 # VISUAL WALKTHROUGH
 # ============================================================================
 """
@@ -280,7 +334,13 @@ Solution2.reverse():
 ║ (Solution3)        ║       ║       ║ ✓ Easiest to implement         ║
 ║                    ║       ║       ║ ✗ Uses extra space             ║
 ║                    ║       ║       ║ ✓ Good for interviews          ║
-╠════════════════════╬═══════╬═══════╬════════════════════════════════╣ 
+╠════════════════════╬═══════╬═══════╬════════════════════════════════╣
+║ With Restoration   ║ O(n)  ║ O(1)  ║ ✓ Optimal space                ║
+║ (Solution4)        ║       ║       ║ ✓ Restores original            ║
+║                    ║       ║       ║ ✓ Production-ready             ║
+║                    ║       ║       ║ ✗ Slightly more complex        ║
+╚════════════════════╩═══════╩═══════╩════════════════════════════════╝
+
 INTERVIEW STRATEGY:
 -------------------
 1. Start with array approach (shows you can solve it quickly)
