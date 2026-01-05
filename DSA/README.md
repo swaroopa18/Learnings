@@ -10,6 +10,12 @@
 04. [238-product-of-array-except-itself](../DSA/arrays/238-product-of-array-except-itself.py)
 04. [134-gas-station](../DSA/arrays/134-M-gas-station.py)
 
+# String
+01. [14-longest-prefix](../DSA/strings/E-14-logest-prefix.py)
+02. [20-valid-parantheses](../DSA/strings/E-20-valid-parantheses.py)
+02. [242-valid-anagram](../DSA/strings/E-242-valid-anagram.py)
+02. [M-3-longest-substring](../DSA/strings/M-3-longest-substring.py)
+
 # LinkedList
 01. [2-add-two-linked-lists](../DSA/LinkedList/2-M-add-two-linked-lists.py)
 02. [19-remove-nth-node](../DSA/LinkedList/19-M-remove-nth-node.py)
