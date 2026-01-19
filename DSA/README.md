@@ -41,6 +41,8 @@
 6.  [78-subsets](../DSA/backtrack/78-M-subsets.py)
 7.  [301-remove-invalid-brackets](../DSA/backtrack/301-M-remove-invalid-brackets.py)
 8.  [90-subsets-II](../DSA/backtrack/M-90-subsets-II.py)
+9.  [77-combinations](../DSA/backtrack/M-77-combinations.py)
+10. [216-Combination-Sum-III](../DSA/backtrack/M-216-Combination-Sum-III.py)
 
 # Dynamic programming
 
