@@ -69,3 +69,5 @@
 1.  [100-same-tree](../DSA/tree/100-same-tree.py)
 2.  [E-94-binary-tree-inorder-traversal](../DSA/tree/E-94-binary-tree-inorder-traversal.py)
 3.  [E-144-binary-tree-preorder-traversal](../DSA/tree/E-144-binary-tree-preorder-traversal.py)
+4.  [E-104-maximum-depth-of-binary-tree](../DSA/tree/E-104-maximum-depth-of-binary-tree.py)
+5.  [M-102-binary-tree-level-order-traversal](../DSA/tree/M-102-binary-tree-level-order-traversal.py)
