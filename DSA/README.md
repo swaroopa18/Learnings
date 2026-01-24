@@ -17,6 +17,7 @@
 2.  [20-valid-parantheses](../DSA/strings/E-20-valid-parantheses.py)
 3.  [242-valid-anagram](../DSA/strings/E-242-valid-anagram.py)
 4.  [M-3-longest-substring](../DSA/strings/M-3-longest-substring.py)
+5.  [M-3-longest-substring](../DSA/strings/M-5-longest-palindromic-substring.py)
 
 # LinkedList
 
@@ -66,3 +67,5 @@
 # Trees
 
 1.  [100-same-tree](../DSA/tree/100-same-tree.py)
+2.  [E-94-binary-tree-inorder-traversal](../DSA/tree/E-94-binary-tree-inorder-traversal.py)
+3.  [E-144-binary-tree-preorder-traversal](../DSA/tree/E-144-binary-tree-preorder-traversal.py)
