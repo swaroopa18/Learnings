@@ -10,6 +10,7 @@
 3.  [455-assign-cookies](../DSA/arrays/455-assign-cookies.py)
 4.  [238-product-of-array-except-itself](../DSA/arrays/238-product-of-array-except-itself.py)
 5.  [134-gas-station](../DSA/arrays/134-M-gas-station.py)
+6.  [560-subarray_sum_equals_k](../DSA/arrays/560-subarray_sum_equals_k.py)
 
 # String
 
