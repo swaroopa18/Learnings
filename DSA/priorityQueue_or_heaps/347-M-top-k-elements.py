@@ -19,26 +19,16 @@ class Solution1:
         Pros: Memory efficient when k is small, good for streaming data
         Cons: Slower than bucket sort for large datasets
         """
-        # Step 1: Build frequency map
-        freq = {}
+        hmap = {}
         for num in nums:
-            freq[num] = freq.get(num, 0) + 1
-        
-        # Step 2: Use min heap to keep track of top k elements
+            hmap[num] = hmap.get(num, 0) + 1
+
         min_heap = []
-        heapq.heapify(min_heap)  # This line is redundant since min_heap is already empty
-        
-        for num, count in freq.items():
-            if len(min_heap) < k:
-                # If heap has space, add current element
-                heapq.heappush(min_heap, (count, num))
-            else:
-                # If current element is more frequent than least frequent in heap
-                if min_heap[0][0] < count:
-                    heapq.heappop(min_heap)  # Remove least frequent
-                    heapq.heappush(min_heap, (count, num))  # Add current
-        
-        # Step 3: Extract elements from heap
+        for num, freq in hmap.items():
+            heapq.heappush(min_heap, (freq, num))
+            if len(min_heap) > k:
+                heapq.heappop(min_heap)
+
         return [num for _, num in min_heap]
 
 

@@ -73,3 +73,11 @@
 4.  [E-104-maximum-depth-of-binary-tree](../DSA/tree/E-104-maximum-depth-of-binary-tree.py)
 5.  [M-102-binary-tree-level-order-traversal](../DSA/tree/M-102-binary-tree-level-order-traversal.py)
 6.  [E-101-symmetric-tree.py](../DSA/tree/E-101-symmetric-tree.py)
+
+# Heaps
+
+1. [347-M-top-k-elements](../DSA/priorityQueue_or_heaps/215-M-kth-largest-element.py)
+2. [347-M-top-k-elements](../DSA/priorityQueue_or_heaps/347-M-top-k-elements.py)
+3. [973-M-k-closet-origin](../DSA/priorityQueue_or_heaps/973-M-k-closet-origin.py)
+4. [347-M-top-k-elements](../DSA/priorityQueue_or_heaps/621_M_task_scheduler.py)
+5. [295-find-median-from-data-stream](../DSA/priorityQueue_or_heaps/H-295-find-median-from-data-stream.py)
