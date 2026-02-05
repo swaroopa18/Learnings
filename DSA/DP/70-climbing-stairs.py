@@ -9,7 +9,11 @@ class Solution:
             return 2
         return self.climbStairs(n - 1) + self.climbStairs(n - 2)
 
-# TIME COMPLEXITY: O(2^n) - exponential, very slow
+# TIME COMPLEXITY: O(2^n) - exponential, very slow, because each call makes two recursive calls (n-1 and n-2),
+# causing the same subproblems to be recomputed multiple times.
+# Each function call branches into 2 more calls (n-1 and n-2), so the recursion forms a binary tree.
+# A binary tree with height n has about 2ⁿ nodes, so the total number of calls is O(2ⁿ).
+
 # SPACE COMPLEXITY: O(n) - recursion stack depth
 # PROBLEM: Recalculates same subproblems multiple times
 # Example: climbStairs(5) calls climbStairs(3) twice independently
@@ -91,6 +95,15 @@ class Solution:
             prev1 = current
         
         return prev1
+    
+class Solution:
+    def climbStairs(self, n: int) -> int:
+            prev1, prev2 = 1, 1
+            for _ in range(0, n - 1):
+                temp = prev2
+                prev2 = prev1 + prev2
+                prev1 = temp
+            return prev2
 
 # TIME COMPLEXITY: O(n) - single loop
 # SPACE COMPLEXITY: O(1) - only using 3 variables
