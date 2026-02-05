@@ -21,6 +21,15 @@ class Solution:
             dp[i] = max(dp[i - 2] + nums[i - 1], dp[i - 1])
 
         return dp[n]
+    
+    class Solution:
+        def rob(self, nums: List[int]) -> int:
+            n = len(nums)
+            dp = [0] * (n + 1)
+            dp[1] = nums[0]
+            for i in range(1, n):
+                dp[i + 1] = max(dp[i - 1] + nums[i], dp[i])
+            return dp[-1]
 
     # IMPROVED VERSION - Space Optimized
     def rob_optimized(self, nums: List[int]) -> int:
@@ -42,6 +51,16 @@ class Solution:
             prev1 = current
             
         return prev1
+    
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        n = len(nums)
+        before_prev, prev = 0, 0
+        for num in nums:
+            curr = max(before_prev + num, prev)
+            before_prev = prev
+            prev = curr
+        return prev
 
     # ALTERNATIVE IMPROVED VERSION - Even cleaner
     def rob_cleanest(self, nums: List[int]) -> int:
