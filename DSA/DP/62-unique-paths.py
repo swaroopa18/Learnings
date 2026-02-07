@@ -24,19 +24,20 @@ class Solution:
         """
         Pure recursive solution - explores all possible paths.
         Extremely inefficient due to massive repeated subproblems.
+
+        If you're at position (i, j):
+        Total paths to (i, j) = paths to (i-1, j) + paths to (i, j-1)
+        If you're at the destination (bottom-right), there's exactly 1 way (you're already there!)
+        If you go out of bounds, there are 0 ways
         """
-        def dfs(i: int, j: int) -> int:
-            # Reached destination
-            if i == m - 1 and j == n - 1:
+        def dfs(row, col):
+            if row == m - 1 and col == n - 1:
                 return 1
-            
-            # Out of bounds
-            if i >= m or j >= n:
+            # Out od bounds
+            if row >= m or col >= n:
                 return 0
-            
-            # Total paths = paths going down + paths going right
-            return dfs(i + 1, j) + dfs(i, j + 1)
-        
+            return dfs(row + 1, col) + dfs(row, col + 1)
+
         return dfs(0, 0)
     
     # ========================================================================
@@ -49,25 +50,19 @@ class Solution:
         Top-down DP with memoization.
         Caches results to avoid recomputing the same subproblems.
         """
-        memo = {}
-        
-        def dfs(i: int, j: int) -> int:
-            # Reached destination
-            if i == m - 1 and j == n - 1:
+        memo = [[-1 for _ in range(n)] for _ in range(m)]
+
+        def dfs(row, col):
+            if row == m - 1 and col == n - 1:
                 return 1
-            
-            # Out of bounds
-            if i >= m or j >= n:
+            if row >= m or col >= n:
                 return 0
-            
-            # Return cached result if available
-            if (i, j) in memo:
-                return memo[(i, j)]
-            
-            # Calculate and cache result
-            memo[(i, j)] = dfs(i + 1, j) + dfs(i, j + 1)
-            return memo[(i, j)]
-        
+            if memo[row][col] != -1:
+                return memo[row][col]
+                
+            memo[row][col] = dfs(row + 1, col) + dfs(row, col + 1)
+            return memo[row][col]
+
         return dfs(0, 0)
     
     # ========================================================================
