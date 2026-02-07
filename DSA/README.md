@@ -59,6 +59,7 @@
 9.  [213-house-robber-II](../DSA/DP/213-house-robber-II.py)
 10. [740-delete-and-earn](../DSA/DP/740-delete-and-earn.py)
 11. [62-unique-paths](../DSA/DP/62-unique-paths.py)
+12. [64_minimum_path_sum](../DSA/DP/64_minimum_path_sum.py)
 
 # Graphs
 
