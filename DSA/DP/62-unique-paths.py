@@ -1,204 +1,302 @@
-# ============================================================================
-# PROBLEM: Unique Paths
-# Find number of unique paths from top-left (0,0) to bottom-right (m-1,n-1)
-# Can only move right or down
-# ============================================================================
+from typing import List
+import math
 
-# ============================================================================
-# SOLUTION 1: 2D DP (YOUR SOLUTION)
-# ============================================================================
-class Solution1:
+
+class Solution:
+    """
+    Problem: Unique Paths
+    
+    There is a robot on an m x n grid. The robot is initially located at the 
+    top-left corner (i.e., grid[0][0]). The robot tries to move to the 
+    bottom-right corner (i.e., grid[m-1][n-1]). The robot can only move 
+    either down or right at any point in time.
+    
+    Given the two integers m and n, return the number of possible unique paths 
+    that the robot can take to reach the bottom-right corner.
+    """
+    
+    # ========================================================================
+    # APPROACH 1: Pure Recursion (Brute Force) - NOT RECOMMENDED
+    # Time Complexity: O(2^(m+n)) - exponential, explores all paths
+    # Space Complexity: O(m+n) - recursion stack depth
+    # ========================================================================
+    def uniquePaths_recursion(self, m: int, n: int) -> int:
+        """
+        Pure recursive solution - explores all possible paths.
+        Extremely inefficient due to massive repeated subproblems.
+        """
+        def dfs(i: int, j: int) -> int:
+            # Reached destination
+            if i == m - 1 and j == n - 1:
+                return 1
+            
+            # Out of bounds
+            if i >= m or j >= n:
+                return 0
+            
+            # Total paths = paths going down + paths going right
+            return dfs(i + 1, j) + dfs(i, j + 1)
+        
+        return dfs(0, 0)
+    
+    # ========================================================================
+    # APPROACH 2: Recursion with Memoization (Top-Down DP)
+    # Time Complexity: O(m*n) - each cell computed once
+    # Space Complexity: O(m*n) - memo table + O(m+n) recursion stack
+    # ========================================================================
+    def uniquePaths_memoization(self, m: int, n: int) -> int:
+        """
+        Top-down DP with memoization.
+        Caches results to avoid recomputing the same subproblems.
+        """
+        memo = {}
+        
+        def dfs(i: int, j: int) -> int:
+            # Reached destination
+            if i == m - 1 and j == n - 1:
+                return 1
+            
+            # Out of bounds
+            if i >= m or j >= n:
+                return 0
+            
+            # Return cached result if available
+            if (i, j) in memo:
+                return memo[(i, j)]
+            
+            # Calculate and cache result
+            memo[(i, j)] = dfs(i + 1, j) + dfs(i, j + 1)
+            return memo[(i, j)]
+        
+        return dfs(0, 0)
+    
+    # ========================================================================
+    # APPROACH 3: Dynamic Programming (Bottom-Up) - 2D Array
+    # Time Complexity: O(m*n) - iterate through all cells
+    # Space Complexity: O(m*n) - 2D DP table
+    # ========================================================================
     def uniquePaths(self, m: int, n: int) -> int:
         """
-        Time Complexity: O(m*n) - visit each cell once
-        Space Complexity: O(m*n) - 2D DP array
+        Bottom-up DP solution (YOUR ORIGINAL APPROACH - CORRECT!).
         
-        Logic:
-        - dp[i][j] = number of ways to reach cell (i,j)
-        - Base case: first row and column all = 1 (only one way to reach)
-        - Recurrence: dp[i][j] = dp[i-1][j] + dp[i][j-1]
+        Key insight:
+        - First row and first column all have 1 path (can only go one direction)
+        - For any other cell: paths = paths_from_above + paths_from_left
         
-        Clear and intuitive approach, good for understanding.
+        This is already optimal for a 2D DP approach!
         """
-        # Initialize DP table with 1s (base cases)
+        # Initialize entire grid with 1s
+        # First row: can only go right (1 path each)
+        # First column: can only go down (1 path each)
         dp = [[1] * n for _ in range(m)]
         
-        # Fill the DP table
+        # Fill the rest of the grid
         for i in range(1, m):
             for j in range(1, n):
+                # Current cell paths = paths from above + paths from left
                 dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
         
         return dp[m - 1][n - 1]
-
-
-# ============================================================================
-# SOLUTION 2: SPACE-OPTIMIZED 1D DP (BEST)
-# TC: O(m*n), SC: O(min(m,n))
-# ============================================================================
-class Solution2:
-    def uniquePaths(self, m: int, n: int) -> int:
+    
+    # ========================================================================
+    # APPROACH 4: Space-Optimized DP - 1D Array (Rolling Array)
+    # Time Complexity: O(m*n) - still process all cells
+    # Space Complexity: O(n) - only one row needed
+    # ========================================================================
+    def uniquePaths_optimized_1d(self, m: int, n: int) -> int:
         """
-        Space-optimized 1D DP using single array.
+        Space-optimized version using 1D array.
         
-        Time Complexity: O(m*n) - same computation
-        Space Complexity: O(min(m,n)) - only one row/column
+        Key insight: We only need the previous row and current row values.
+        Since we process left-to-right, we can reuse the same array.
         
-        Key insight: we only need the previous row to compute current row.
-        This is the OPTIMAL approach for interviews.
+        - dp[j] initially holds the value from the row above (previous iteration)
+        - dp[j-1] holds the value from the left (current iteration)
         """
-        # Use smaller dimension for the array to minimize space
-        if m < n:
-            m, n = n, m
-        
-        # dp[j] represents number of ways to reach current row, column j
+        # Initialize with all 1s (represents first row)
         dp = [1] * n
         
+        # Process each row
         for i in range(1, m):
             for j in range(1, n):
-                # dp[j] = ways from above + ways from left
-                dp[j] += dp[j - 1]
+                # dp[j] currently has value from above (previous row)
+                # dp[j-1] has value from left (current row, just updated)
+                dp[j] = dp[j] + dp[j - 1]
         
         return dp[n - 1]
-
-
-# ============================================================================
-# SOLUTION 3: MATHEMATICAL APPROACH (MOST EFFICIENT)
-# TC: O(min(m,n)), SC: O(1)
-# ============================================================================
-class Solution3:
-    def uniquePaths(self, m: int, n: int) -> int:
+    
+    # ========================================================================
+    # APPROACH 5: Even More Space-Optimized - Single Row with Rolling Update
+    # Time Complexity: O(m*n)
+    # Space Complexity: O(min(m,n)) - use smaller dimension
+    # ========================================================================
+    def uniquePaths_optimized_min_space(self, m: int, n: int) -> int:
         """
-        Mathematical approach using combinations.
-        
-        Time Complexity: O(min(m,n)) - computing combination
-        Space Complexity: O(1) - no extra space
-        
-        Key insight: This is choosing (m-1) down moves from (m+n-2) total moves
-        Formula: C(m+n-2, m-1) = (m+n-2)! / ((m-1)! * (n-1)!)
+        Further optimization: always use the smaller dimension for our array.
+        If m > n, we can transpose our thinking and use n-sized array.
         """
-        # We need (m-1) down moves and (n-1) right moves
-        # Total moves = m + n - 2
-        # Choose m-1 positions for down moves: C(m+n-2, m-1)
+        # Use smaller dimension for space efficiency
+        if m > n:
+            m, n = n, m
         
-        total_moves = m + n - 2
-        down_moves = m - 1
+        dp = [1] * m
         
-        # Compute C(total_moves, down_moves) efficiently
-        # Use smaller of down_moves and right_moves to minimize computation
-        k = min(down_moves, n - 1)
+        for j in range(1, n):
+            for i in range(1, m):
+                dp[i] = dp[i] + dp[i - 1]
+        
+        return dp[m - 1]
+    
+    # ========================================================================
+    # APPROACH 6: Mathematical Solution (Combinatorics) - MOST EFFICIENT!
+    # Time Complexity: O(m+n) or O(min(m,n)) - for computing combinations
+    # Space Complexity: O(1) - only variables
+    # ========================================================================
+    def uniquePaths_math(self, m: int, n: int) -> int:
+        """
+        Mathematical solution using combinatorics - BEST APPROACH!
+        
+        Insight: To reach (m-1, n-1) from (0,0):
+        - We need exactly (m-1) down moves and (n-1) right moves
+        - Total moves = (m-1) + (n-1) = m+n-2
+        - Problem becomes: "Choose (m-1) positions for down moves from (m+n-2) total"
+        
+        Answer = C(m+n-2, m-1) = (m+n-2)! / ((m-1)! * (n-1)!)
+        
+        This is the OPTIMAL solution in terms of both time and space!
+        """
+        # Total steps needed
+        total_steps = m + n - 2
+        # Down steps (or right steps, doesn't matter)
+        down_steps = m - 1
+        
+        # Calculate C(total_steps, down_steps) efficiently
+        # C(n, k) = n! / (k! * (n-k)!)
+        # Optimized: C(n, k) = (n * (n-1) * ... * (n-k+1)) / (k * (k-1) * ... * 1)
+        
+        return math.comb(total_steps, down_steps)
+    
+    # Alternative implementation without using math.comb
+    def uniquePaths_math_manual(self, m: int, n: int) -> int:
+        """
+        Manual calculation of combinations without using math library.
+        Avoids overflow by dividing as we multiply.
+        """
+        total_steps = m + n - 2
+        down_steps = min(m - 1, n - 1)  # Use smaller for efficiency
         
         result = 1
-        for i in range(k):
-            result = result * (total_moves - i) // (i + 1)
+        for i in range(down_steps):
+            # Multiply by (total_steps - i) and divide by (i + 1)
+            result = result * (total_steps - i) // (i + 1)
         
         return result
 
 
 # ============================================================================
-# SOLUTION 4: TOP-DOWN DP (MEMOIZATION)
-# TC: O(m*n), SC: O(m*n)
+# VISUAL EXAMPLES
 # ============================================================================
-class Solution4:
-    def uniquePaths(self, m: int, n: int) -> int:
-        """
-        Time Complexity: O(m*n) - each cell computed once
-        Space Complexity: O(m*n) - memoization + recursion stack
-        
-        Good for understanding recursive structure, but less efficient
-        due to recursion overhead.
-        """
-        memo = {}
-        
-        def dfs(i, j):
-            # Base cases
-            if i == 0 or j == 0:
-                return 1
-            if i < 0 or j < 0:
-                return 0
-            
-            if (i, j) in memo:
-                return memo[(i, j)]
-            
-            # Recurrence: ways from top + ways from left
-            memo[(i, j)] = dfs(i - 1, j) + dfs(i, j - 1)
-            return memo[(i, j)]
-        
-        return dfs(m - 1, n - 1)
-
-
 """
-COMPREHENSIVE ANALYSIS:
+Example 1: m = 3, n = 7
+Grid visualization (showing number of paths to reach each cell):
 
-1. **APPROACH RANKING** (by preference):
-   a) Solution 2 (1D DP) - BEST for interviews ✅
-   b) Solution 3 (Mathematical) - Most efficient but requires math knowledge
-   c) Solution 1 (2D DP) - Good for learning/teaching
-   d) Solution 4 (Top-down) - Educational but has overhead
+    0   1   2   3   4   5   6
+  ┌───┬───┬───┬───┬───┬───┬───┐
+0 │ 1 │ 1 │ 1 │ 1 │ 1 │ 1 │ 1 │
+  ├───┼───┼───┼───┼───┼───┼───┤
+1 │ 1 │ 2 │ 3 │ 4 │ 5 │ 6 │ 7 │
+  ├───┼───┼───┼───┼───┼───┼───┤
+2 │ 1 │ 3 │ 6 │10 │15 │21 │28 │
+  └───┴───┴───┴───┴───┴───┴───┘
 
-2. **YOUR SOLUTION ANALYSIS**:
-   - ✅ Correct and well-implemented
-   - ✅ Clean initialization with base cases
-   - ✅ Clear logic flow
-   - ❌ Uses O(m*n) space when O(min(m,n)) is possible
+Answer: 28 unique paths
 
-3. **SPACE OPTIMIZATION** (Solution 1 → Solution 2):
-   - Key insight: only need previous row to compute current row
-   - Reduces space from O(m*n) to O(min(m,n))
-   - Same time complexity, better space efficiency
+Example 2: m = 3, n = 2
+Grid visualization:
 
-4. **MATHEMATICAL SOLUTION INSIGHT**:
-   - Problem = placing (m-1) down moves in (m+n-2) total moves
-   - This is combination: C(m+n-2, m-1)
-   - Most efficient but requires combinatorics knowledge
+    0   1
+  ┌───┬───┐
+0 │ 1 │ 1 │
+  ├───┼───┤
+1 │ 1 │ 2 │
+  ├───┼───┤
+2 │ 1 │ 3 │
+  └───┴───┘
 
-5. **COMPLEXITY COMPARISON**:
-   ```
-   Approach          Time         Space        Notes
-   2D DP            O(m*n)       O(m*n)       Your solution
-   1D DP            O(m*n)       O(min(m,n))  Optimal DP
-   Mathematical     O(min(m,n))  O(1)         Most efficient
-   Memoization      O(m*n)       O(m*n)       Recursion overhead
-   ```
+Answer: 3 unique paths
+Paths: 
+1. Right -> Down -> Down
+2. Down -> Right -> Down
+3. Down -> Down -> Right
 
-6. **INTERVIEW STRATEGY**:
-   - Start with your 2D DP solution (shows understanding)
-   - Optimize to 1D DP (demonstrates space optimization skills)  
-   - Mention mathematical approach as bonus (shows mathematical thinking)
-   - Discuss trade-offs between approaches
+Mathematical verification for Example 1:
+- Total moves needed: (3-1) + (7-1) = 2 + 6 = 8 moves
+- Down moves needed: 2
+- C(8, 2) = 8! / (2! * 6!) = (8 * 7) / (2 * 1) = 56 / 2 = 28 ✓
+"""
 
-7. **WHEN TO USE EACH**:
-   
-   **2D DP**: 
-   - Learning DP concepts
-   - When clarity is more important than optimization
-   - Building intuition for similar problems
-   
-   **1D DP**:
-   - Production code (optimal balance)
-   - Technical interviews
-   - When space matters
-   
-   **Mathematical**:
-   - When performance is critical
-   - Competitive programming
-   - When you're comfortable with combinatorics
 
-8. **EDGE CASES**:
-   - m = 1 or n = 1: return 1 (only one path)
-   - m = n = 1: return 1
-   - All solutions handle these correctly
+# ============================================================================
+# COMPARISON SUMMARY
+# ============================================================================
+"""
+┌──────────────────────┬─────────────────┬─────────────────┬──────────────────────┐
+│ Approach             │ Time Complexity │ Space Complexity│ Notes                │
+├──────────────────────┼─────────────────┼─────────────────┼──────────────────────┤
+│ 1. Pure Recursion    │ O(2^(m+n))      │ O(m+n)          │ ❌ Too slow          │
+│ 2. Memoization       │ O(m*n)          │ O(m*n) + stack  │ Good for learning    │
+│ 3. 2D DP (Original)  │ O(m*n)          │ O(m*n)          │ ✅ Clear & standard  │
+│ 4. 1D DP Array       │ O(m*n)          │ O(n)            │ Space optimized      │
+│ 5. Min Dimension     │ O(m*n)          │ O(min(m,n))     │ Better space opt     │
+│ 6. Math (Combinat.)  │ O(m+n)          │ O(1)            │ ⭐ BEST - Optimal!  │
+└──────────────────────┴─────────────────┴─────────────────┴──────────────────────┘
 
-9. **COMMON MISTAKES**:
-   - Wrong base case initialization
-   - Off-by-one errors in loop bounds
-   - Not considering space optimization
-   - Integer overflow in mathematical approach (for very large inputs)
+RECOMMENDATION BY CONTEXT:
 
-10. **OPTIMIZATION NOTES**:
-    - Your solution is correct and efficient
-    - Main improvement: space optimization to O(min(m,n))
-    - Mathematical solution exists but requires different thinking
+🎯 For Interviews (Coding Question):
+   - Start with Approach 3 (2D DP) - your original solution is perfect!
+   - Mention you can optimize to O(n) space with Approach 4
+   - If interviewer asks for best solution, present Approach 6 (Math)
 
-RECOMMENDATION: Learn the progression from your 2D DP → 1D DP optimization.
-This shows both understanding and optimization skills in interviews.
+🚀 For Production/Best Performance:
+   - Use Approach 6 (Mathematical) - it's O(m+n) time and O(1) space!
+   - Most elegant and efficient
+
+📚 For Learning DP:
+   - Study Approaches 2 and 3 to understand DP patterns
+   - Practice both top-down (memoization) and bottom-up (tabulation)
+
+YOUR ORIGINAL CODE ANALYSIS:
+✅ Correct logic
+✅ Clean implementation  
+✅ Optimal for 2D DP approach
+✅ Good variable naming
+✅ No bugs!
+
+Minor note: Your code is already excellent! The only "upgrade" would be:
+- Space optimization (Approach 4): O(n) instead of O(m*n)
+- Mathematical approach (Approach 6): O(m+n) time, O(1) space
+"""
+
+
+# ============================================================================
+# WHY THE MATHEMATICAL APPROACH WORKS
+# ============================================================================
+"""
+🎯 INTUITION: This is a PERMUTATION problem!
+
+Think of it this way:
+- From (0,0) to (m-1, n-1), you make exactly (m+n-2) moves
+- Of these moves, exactly (m-1) must be DOWN and (n-1) must be RIGHT
+- The question is: "In how many ways can we arrange these moves?"
+
+Example: m=3, n=3 (need 2 downs, 2 rights = 4 total moves)
+- Moves can be represented as: D D R R
+- Different arrangements: DDRR, DRDR, DRRD, RDDR, RDRD, RRDD
+- This is choosing 2 positions for D from 4 total positions
+- C(4,2) = 6 ✓
+
+Formula: C(m+n-2, m-1) or equivalently C(m+n-2, n-1)
+
+This transforms a DP problem into a pure math problem!
 """
