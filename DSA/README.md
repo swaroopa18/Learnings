@@ -60,6 +60,7 @@
 10. [740-delete-and-earn](../DSA/DP/740-delete-and-earn.py)
 11. [62-unique-paths](../DSA/DP/62-unique-paths.py)
 12. [64_minimum_path_sum](../DSA/DP/64_minimum_path_sum.py)
+13. [63_unique_paths_II](../DSA/DP/63_unique_paths_II.py)
 
 # Graphs
 
