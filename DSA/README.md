@@ -61,6 +61,7 @@
 11. [62-unique-paths](../DSA/DP/62-unique-paths.py)
 12. [64_minimum_path_sum](../DSA/DP/64_minimum_path_sum.py)
 13. [63_unique_paths_II](../DSA/DP/63_unique_paths_II.py)
+14. [300_longest_increasing_subsequence](../DSA/DP/300_longest_increasing_subsequence.py)
 
 # Graphs
 
