@@ -1,6 +1,12 @@
 # CLIMBING STAIRS - LEETCODE PROBLEM ANALYSIS
 
 # APPROACH 1: NAIVE RECURSION
+# 👉 Problem idea:
+# If you are at step n, you can reach there from:
+
+# step n-1 (taking 1 step)
+# step n-2 (taking 2 steps)
+# So brute force = try all possibilities using recursion.
 class Solution:
     def climbStairs(self, n: int) -> int:
         if n == 1:
