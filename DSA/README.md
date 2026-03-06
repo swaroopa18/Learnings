@@ -11,6 +11,7 @@
 4.  [238-product-of-array-except-itself](../DSA/arrays/238-product-of-array-except-itself.py)
 5.  [134-gas-station](../DSA/arrays/134-M-gas-station.py)
 6.  [560-subarray_sum_equals_k](../DSA/arrays/560-subarray_sum_equals_k.py)
+7.  [169_majority_element](../DSA/arrays/169_majority_element.py)
 
 # String
 
