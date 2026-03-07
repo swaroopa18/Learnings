@@ -12,6 +12,8 @@
 5.  [134-gas-station](../DSA/arrays/134-M-gas-station.py)
 6.  [560-subarray_sum_equals_k](../DSA/arrays/560-subarray_sum_equals_k.py)
 7.  [169_majority_element](../DSA/arrays/169_majority_element.py)
+8.  [53_maximum_subarray](../DSA/arrays/53_maximum_subarray.py)
+9.  [724_find_pivot_index](../DSA/arrays/724_find_pivot_index.py)
 
 # String
 
