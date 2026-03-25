@@ -3,6 +3,7 @@
 1.  [11-container-with-most-water](../DSA/two-pointers/11-container-with-most-water.py)
 2.  [125-valid-palindrome](../DSA/two-pointers/125-valid-palindrome.py)
 3.  [977_squares_of_a_sorted_array](../DSA/two-pointers/977_squares_of_a_sorted_array.py)
+3.  [42_trapping_rain_water](../DSA/two-pointers/42_trapping_rain_water.py)
 
 # Array
 
@@ -15,7 +16,7 @@
 7.  [169_majority_element](../DSA/arrays/169_majority_element.py)
 8.  [53_maximum_subarray](../DSA/arrays/53_maximum_subarray.py)
 9.  [724_find_pivot_index](../DSA/arrays/724_find_pivot_index.py)
-10.  [128_longest_consecutive_sequence](../DSA/arrays/arrays/128_longest_consecutive_sequence.py)
+10. [128_longest_consecutive_sequence](../DSA/arrays/arrays/128_longest_consecutive_sequence.py)
 
 # String
 
@@ -24,6 +25,7 @@
 3.  [242-valid-anagram](../DSA/strings/E-242-valid-anagram.py)
 4.  [M-3-longest-substring](../DSA/strings/M-3-longest-substring.py)
 5.  [M-3-longest-substring](../DSA/strings/M-5-longest-palindromic-substring.py)
+6.  [680_valid_palindrome_II](../DSA/strings/680_valid_palindrome_II.py)
 
 # LinkedList
 
