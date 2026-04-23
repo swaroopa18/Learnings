@@ -94,3 +94,6 @@
 3. [973-M-k-closet-origin](../DSA/priorityQueue_or_heaps/973-M-k-closet-origin.py)
 4. [347-M-top-k-elements](../DSA/priorityQueue_or_heaps/621_M_task_scheduler.py)
 5. [295-find-median-from-data-stream](../DSA/priorityQueue_or_heaps/H-295-find-median-from-data-stream.py)
+
+# Binary Search
+1. [33_M_search_in_rotated_sorted_array](../DSA/binary_search/33_M_search_in_rotated_sorted_array.py)
