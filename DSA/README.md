@@ -3,7 +3,7 @@
 1.  [11-container-with-most-water](../DSA/two-pointers/11-container-with-most-water.py)
 2.  [125-valid-palindrome](../DSA/two-pointers/125-valid-palindrome.py)
 3.  [977_squares_of_a_sorted_array](../DSA/two-pointers/977_squares_of_a_sorted_array.py)
-3.  [42_trapping_rain_water](../DSA/two-pointers/42_trapping_rain_water.py)
+4.  [42_trapping_rain_water](../DSA/two-pointers/42_trapping_rain_water.py)
 
 # Array
 
@@ -96,4 +96,6 @@
 5. [295-find-median-from-data-stream](../DSA/priorityQueue_or_heaps/H-295-find-median-from-data-stream.py)
 
 # Binary Search
+
 1. [33_M_search_in_rotated_sorted_array](../DSA/binary_search/33_M_search_in_rotated_sorted_array.py)
+1. [153_find_minimum_in_rotated_sorted_array](../DSA/binary_search/153_find_minimum_in_rotated_sorted_array.py)
