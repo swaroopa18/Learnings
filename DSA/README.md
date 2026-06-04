@@ -16,7 +16,8 @@
 7.  [169_majority_element](../DSA/arrays/169_majority_element.py)
 8.  [53_maximum_subarray](../DSA/arrays/53_maximum_subarray.py)
 9.  [724_find_pivot_index](../DSA/arrays/724_find_pivot_index.py)
-10. [128_longest_consecutive_sequence](../DSA/arrays/arrays/128_longest_consecutive_sequence.py)
+10. [128_longest_consecutive_sequence](../DSA/arrays/128_longest_consecutive_sequence.py)
+11. [567_permutation_in_string](../DSA/arrays/567_permutation_in_string.py)
 
 # String
 
