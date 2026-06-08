@@ -28,6 +28,7 @@
 4.  [M-3-longest-substring](../DSA/strings/M-3-longest-substring.py)
 5.  [M-3-longest-substring](../DSA/strings/M-5-longest-palindromic-substring.py)
 6.  [680_valid_palindrome_II](../DSA/strings/680_valid_palindrome_II.py)
+6.  [6_zigzag_conversion](../DSA/strings/6_zigzag_conversion.py)
 
 # LinkedList
 
