@@ -20,6 +20,7 @@
 11. [567_permutation_in_string](../DSA/arrays/567_permutation_in_string.py)
 12. [49_group_anagrams](../DSA/arrays/49_group_anagrams.py)
 13. [442_find_all_duplicates_in_an_array](../DSA/arrays/442_find_all_duplicates_in_an_array.py)
+14. [1423_maximum_points_you_can_obtain_from_cards](../DSA/arrays/1423_maximum_points_you_can_obtain_from_cards.py)
 
 # String
 
