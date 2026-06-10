@@ -18,7 +18,8 @@
 9.  [724_find_pivot_index](../DSA/arrays/724_find_pivot_index.py)
 10. [128_longest_consecutive_sequence](../DSA/arrays/128_longest_consecutive_sequence.py)
 11. [567_permutation_in_string](../DSA/arrays/567_permutation_in_string.py)
-11. [49_group_anagrams](../DSA/arrays/49_group_anagrams.py)
+12. [49_group_anagrams](../DSA/arrays/49_group_anagrams.py)
+13. [442_find_all_duplicates_in_an_array](../DSA/arrays/442_find_all_duplicates_in_an_array.py)
 
 # String
 
