@@ -15,35 +15,67 @@
 
 
 # ============================================================
+# MY INTUITION (plain English)
+# ============================================================
+# Imagine you have a bunch of walls of different heights in a
+# row, and it rains. Water gets trapped in the gaps between
+# tall walls.
+#
+# The key idea:
+#   At any gap, how much water sits there depends on the
+#   shorter of the two tallest walls on its left and right —
+#   because water spills over the shorter wall first.
+#   So water at any spot = shorter surrounding wall minus
+#   the height of the ground at that spot.
+#
+# First attempt:
+#   I first went through all the walls and noted down, for
+#   each spot, the tallest wall seen to its left and the
+#   tallest wall seen to its right. Then I went through again
+#   and used those notes to calculate the water at each spot.
+#   It works, but I was carrying around two big lists of notes
+#   the whole time.
+#
+# Better idea:
+#   I don't need to write everything down first. Instead, use
+#   two fingers — one starting from the left end and one from
+#   the right end. Whichever finger is pointing at the shorter
+#   wall, move that one inward. Why? Because when one side is
+#   shorter, that side is what limits the water — no need to
+#   care about what's on the other side at all. So calculate
+#   the water right there on the spot and keep moving.
+#   No lists needed, just two fingers walking toward each other.
+# ============================================================
+
+
+# ============================================================
 # KEY INSIGHT (applies to ALL approaches)
 # ============================================================
 # Water above any bar i is determined by:
 #
-#   water[i] = min(max_height_to_left, max_height_to_right) - height[i]
+#   water[i] = min(max_left[i], max_right[i]) - height[i]
 #
 # Think of it like pouring water into a valley —
-# the water level is limited by the SHORTER of the two surrounding walls.
-# If this value is negative (bar is taller than both walls), no water sits here.
+# the water level is capped by the SHORTER of the two walls.
+# If this value is negative (bar taller than both walls), water[i] = 0.
 # ============================================================
 
 
 # ============================================================
-# APPROACH 1: Prefix/Suffix Max Arrays (your first solution)
+# APPROACH 1: Prefix/Suffix Max Arrays
 # ============================================================
 # Strategy:
 #   Pre-compute two arrays:
-#     max_left[i]  = max height in height[0..i-1]   (tallest wall to the LEFT)
-#     max_right[i] = max height in height[i+1..n-1] (tallest wall to the RIGHT)
-#   Then for each bar, apply the key insight above.
+#     max_left[i]  = max height in height[0..i-1]   (tallest wall LEFT of i)
+#     max_right[i] = max height in height[i+1..n-1] (tallest wall RIGHT of i)
+#   Then apply the key insight above for each bar.
 #
-# Why slicing (height[:i]) is suboptimal:
-#   Each max(height[:i]) call is O(i), making the loop O(n²) total.
-#   Fix: build max_left incrementally → max_left[i] = max(max_left[i-1], height[i-1])
-#   (shown in the corrected version below)
+# Common pitfall:
+#   Using max(height[:i]) inside a loop is O(n) per call → O(n²) total.
+#   Fix: build max_left and max_right incrementally (running max) → O(n).
 #
-# Time Complexity : O(n²) as written due to slicing inside loop
-#                   O(n)  with incremental fix (see below)
-# Space Complexity: O(n)  — two extra arrays of size n
+# Time : O(n)  — three linear passes
+# Space: O(n)  — two extra arrays of size n
 # ============================================================
 
 from typing import List
@@ -54,17 +86,14 @@ class SolutionPrefixSuffix:
         max_left  = [0] * n
         max_right = [0] * n
 
-        # ⚠️  Original uses max(height[:i]) → O(n) per iteration = O(n²) total
-        # ✅  Incremental fix: carry forward the running max instead
         for i in range(1, n):
-            max_left[i] = max(max_left[i - 1], height[i - 1])   # running max from left
+            max_left[i] = max(max_left[i - 1], height[i - 1])
 
         for i in range(n - 2, -1, -1):
-            max_right[i] = max(max_right[i + 1], height[i + 1]) # running max from right
+            max_right[i] = max(max_right[i + 1], height[i + 1])
 
         total = 0
         for i in range(n):
-            # Water trapped = bounded by shorter wall, minus the bar's own height
             water = min(max_left[i], max_right[i]) - height[i]
             if water > 0:
                 total += water
@@ -73,46 +102,43 @@ class SolutionPrefixSuffix:
 
 
 # ============================================================
-# APPROACH 2: Two Pointers — Optimal (your second solution)
+# APPROACH 2: Two Pointers — Optimal
 # ============================================================
 # Strategy:
-#   Eliminate the extra arrays entirely by observing:
-#     → If max_left < max_right, the LEFT side is the limiting wall.
-#       We don't need to know the exact right max — we know it's ≥ max_left,
-#       so water at l is fully determined by max_left alone.
+#   Eliminate both extra arrays by observing:
+#     → If max_left < max_right, the left wall is the bottleneck.
+#       We don't need the exact right max — knowing it's ≥ max_left
+#       is enough to compute water at the left pointer safely.
 #     → Symmetrically, if max_right ≤ max_left, process the right pointer.
 #
 #   Move the pointer on the SHORTER side inward each step.
-#   Update the running max AFTER computing water (order matters!).
 #
-# Why the order of operations matters:
-#   curr = min(max_left, max_right) - height[l]   ← use OLD max before update
-#   max_left = max(max_left, height[l])            ← THEN update
-#   Swapping these two lines would count the bar's own height as a wall.
+# Critical order of operations:
+#   ✅  curr     = max_left - height[l]        # compute water with OLD max
+#       max_left = max(max_left, height[l])    # THEN update running max
 #
-# Time Complexity : O(n)  — single pass, each element visited once
-# Space Complexity: O(1)  — only a handful of variables
+#   ❌  max_left = max(max_left, height[l])    # wrong: counts bar as its own wall
+#       curr     = max_left - height[l]        # always 0 or negative
+#
+# Time : O(n)  — single pass, each element visited once
+# Space: O(1)  — only a handful of variables
 # ============================================================
 
 class SolutionTwoPointers:
     def trap(self, height: List[int]) -> int:
-        n = len(height)
-        max_left  = height[0]       # tallest wall seen from the left so far
-        max_right = height[n - 1]   # tallest wall seen from the right so far
-        l, r = 0, n - 1
+        l, r = 0, len(height) - 1
+        max_left, max_right = height[l], height[r]
         total = 0
 
         while l < r:
             if max_left < max_right:
-                # Left wall is the bottleneck → safe to process left side
                 l += 1
-                curr = min(max_left, max_right) - height[l]  # water at bar l
-                max_left = max(max_left, height[l])           # update running max
+                curr     = max_left - height[l]       # water at bar l
+                max_left = max(max_left, height[l])   # update running max
             else:
-                # Right wall is the bottleneck → safe to process right side
                 r -= 1
-                curr = min(max_left, max_right) - height[r]  # water at bar r
-                max_right = max(max_right, height[r])         # update running max
+                curr      = max_right - height[r]     # water at bar r
+                max_right = max(max_right, height[r]) # update running max
 
             if curr > 0:
                 total += curr
@@ -121,35 +147,64 @@ class SolutionTwoPointers:
 
 
 # ============================================================
-# APPROACH 3: Stack-Based (alternative perspective)
+# APPROACH 2b: Two Pointers — Condensed variant
+# ============================================================
+# Same logic as above; update the max first, then subtract height.
+# This works because max(max_left, height[l]) - height[l] >= 0 always,
+# so the curr > 0 guard is unnecessary.
+# ============================================================
+
+class Solution:
+    def trap(self, height: List[int]) -> int:
+        left, right = 0, len(height) - 1
+        left_max, right_max = height[left], height[right]
+        output = 0
+
+        while left < right:
+            if left_max < right_max:
+                left += 1
+                left_max = max(left_max, height[left])
+                output  += left_max - height[left]
+            else:
+                right -= 1
+                right_max = max(right_max, height[right])
+                output   += right_max - height[right]
+
+        return output
+
+
+# ============================================================
+# APPROACH 3: Monotonic Stack
 # ============================================================
 # Strategy:
-#   Use a monotonic decreasing stack of indices.
-#   When a taller bar is found, it can trap water with the previous bars.
-#   Pop the stack and calculate the horizontal water trapped between
-#   the popped bar and the new taller bar.
+#   Maintain a stack of indices whose heights are non-increasing.
+#   When a taller bar arrives at index i:
+#     - Pop the top (the "floor" of a water pocket).
+#     - If the stack is now empty, there's no left wall → skip.
+#     - Otherwise, the new top is the left wall; i is the right wall.
+#     - Compute the horizontal water trapped between the two walls.
 #
-# Useful for: thinking about water trapped in horizontal layers.
+#   This approach accumulates water in horizontal layers rather than
+#   per-bar vertically, making it intuitive for certain problem variants.
 #
-# Time Complexity : O(n)  — each bar pushed and popped at most once
-# Space Complexity: O(n)  — stack can hold up to n indices
+# Time : O(n)  — each index pushed and popped at most once
+# Space: O(n)  — stack can hold up to n indices in the worst case
 # ============================================================
 
 class SolutionStack:
     def trap(self, height: List[int]) -> int:
-        stack = []  # stores indices; heights are non-increasing in the stack
+        stack = []   # indices; heights[stack[i]] are non-increasing
         total = 0
 
         for i, h in enumerate(height):
-            # Current bar is taller than the stack top → water can be trapped
             while stack and h > height[stack[-1]]:
-                bottom = stack.pop()            # the "floor" of the water pocket
+                bottom = stack.pop()          # floor of the water pocket
                 if not stack:
-                    break                       # no left wall → no water
-                left_wall = stack[-1]
-                width     = i - left_wall - 1
+                    break                     # no left wall → no water here
+                left_wall      = stack[-1]
+                width          = i - left_wall - 1
                 bounded_height = min(height[left_wall], h) - height[bottom]
-                total += width * bounded_height
+                total         += width * bounded_height
 
             stack.append(i)
 
@@ -161,10 +216,10 @@ class SolutionStack:
 # ============================================================
 #
 # Approach              | Time  | Space | Notes
-# ----------------------|-------|-------|---------------------------
-# Prefix/Suffix (fixed) | O(n)  | O(n)  | Intuitive, needs 2 arrays
+# ----------------------|-------|-------|------------------------------
+# Prefix/Suffix (fixed) | O(n)  | O(n)  | Intuitive; needs 2 arrays
 # Two Pointers          | O(n)  | O(1)  | ✅ Best — no extra space
-# Stack-Based           | O(n)  | O(n)  | Good for horizontal layers
+# Stack-Based           | O(n)  | O(n)  | Useful for horizontal layers
 #
 # ============================================================
 
@@ -184,17 +239,21 @@ class SolutionStack:
 #  max_left  = [0, 4, 4, 4, 4, 4]
 #  max_right = [5, 5, 5, 5, 5, 0]
 #  water     = [0, 2, 4, 1, 2, 0]  → total = 9
+#
 # ============================================================
 
 
 # ============================================================
-# EDGE CASES TO CONSIDER
+# EDGE CASES
 # ============================================================
-# 1. All bars same height    → [3,3,3,3]    → 0  (flat, no valley)
-# 2. Monotonically increasing → [1,2,3,4]   → 0  (no left wall ever)
-# 3. Monotonically decreasing → [4,3,2,1]   → 0  (no right wall ever)
-# 4. Single valley            → [3,0,3]     → 3
-# 5. Empty / single bar       → [] or [5]   → 0
-# 6. Large spike in middle    → [0,5,0]     → 0  (no enclosing wall)
+#
+# Case                       | Input        | Output | Reason
+# ---------------------------|--------------|--------|------------------------
+# All bars same height       | [3,3,3,3]    | 0      | Flat — no valley
+# Monotonically increasing   | [1,2,3,4]    | 0      | No left wall ever
+# Monotonically decreasing   | [4,3,2,1]    | 0      | No right wall ever
+# Single valley              | [3,0,3]      | 3      | Symmetric walls
+# Empty or single bar        | [] or [5]    | 0      | Nothing to trap
+# Lone spike in middle       | [0,5,0]      | 0      | No enclosing walls
+#
 # ============================================================
-
