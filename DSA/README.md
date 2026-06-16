@@ -22,6 +22,8 @@
 13. [442_find_all_duplicates_in_an_array](../DSA/arrays/442_find_all_duplicates_in_an_array.py)
 14. [1423_maximum_points_you_can_obtain_from_cards](../DSA/arrays/1423_maximum_points_you_can_obtain_from_cards.py)
 15. [76_minimum_window_substring](../DSA/arrays/76_minimum_window_substring.py)
+16. [424_longest_repeating_character_replacement](../DSA/arrays/424_longest_repeating_character_replacement.py)
+17. [1004_max_consecutive_ones_III](../DSA/arrays/1004_max_consecutive_ones_III.py)
 
 # String
 
