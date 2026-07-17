@@ -34,6 +34,30 @@ class Solution1:
         return max_count
 
 
+class Solution:
+    def longestConsecutive(self, nums: List[int]) -> int:
+        hset1 = set(nums)
+        hset2 = set(nums)
+
+        max_len = 0
+        for num in hset1:
+            if num not in hset2:
+                continue
+            length = 0
+            curr = num
+            while curr in hset2:
+                length += 1
+                hset2.remove(curr)
+                curr -= 1
+            curr = num + 1
+            while curr in hset2:
+                length += 1
+                hset2.remove(curr)
+                curr += 1
+            max_len = max(max_len, length)
+        return max_len
+
+
 # ─────────────────────────────────────────────────────────────
 # APPROACH 2 — Hash Set  ✦ optimal
 # ─────────────────────────────────────────────────────────────
