@@ -98,14 +98,27 @@ resource "aws_instance" "timesheet_db" {
   # additional EBS volume
   # delete_on_termination = false
   #
-  ebs_block_device {
-    device_name           = "/dev/sdh"
-    volume_size           = 10
-    volume_type           = "gp3"
-    delete_on_termination = false
-  }
-
   tags = {
     Name = "timesheet-db"
   }
+}
+
+resource "aws_ebs_volume" "postgres_data" {
+  availability_zone = "ap-south-1a"
+  size              = 10
+  type              = "gp3"
+
+  tags = {
+    Name = "timesheet-postgres-data"
+  }
+
+  lifecycle {
+    prevent_destroy = false
+  }
+}
+
+resource "aws_volume_attachment" "postgres_data" {
+  device_name = "/dev/sdh"
+  volume_id   = aws_ebs_volume.postgres_data.id
+  instance_id = aws_instance.timesheet_db.id
 }

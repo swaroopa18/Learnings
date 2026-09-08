@@ -1,6 +1,6 @@
 aws_region           = "ap-south-1"
-ami_id               = "ami-0ac7b260cf76d8865"
+ami_id               = "ami-06a83a7a581c729a9"
 server_instance_type = "t3.micro"
-db_instance_type     = "t2.micro"
+db_instance_type     = "t3.micro"
 
 ssh_key_name = "timesheet-poc-key"
