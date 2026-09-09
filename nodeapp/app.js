@@ -10,7 +10,15 @@ const server = http.createServer((req, res) => {
         res.write('</html>')
         return res.end()
     } else if (req.url == '/message' && method == "POST") {
-        fs.writeFileSync("message.text", "DUMMY")
+        const body = []
+        req.on("data", (chunk) => {
+            body.push(chunk)
+        })
+        req.on("end", () => {
+            const parseBody = Buffer.concat(body).toString();
+            const message = parseBody.split("=")[1]
+            fs.writeFileSync("message.text", message)
+        })
         res.statusCode = 302
         res.setHeader('Location', '/')
         return res.end()
