@@ -1,11 +1,18 @@
-const http = require('http')
+const http = require('http');
+const fs = require("fs")
 
 const server = http.createServer((req, res) => {
+    const method = req.method
     if (req.url === '/') {
         res.write('<html>')
         res.write('<div>hi</div>')
         res.write('<body><form action="/message" method="post" ><input type="text" name="message"><button type"submit">submit</button></input></form></body>')
         res.write('</html>')
+        return res.end()
+    } else if (req.url == '/message' && method == "POST") {
+        fs.writeFileSync("message.text", "DUMMY")
+        res.statusCode = 302
+        res.setHeader('Location', '/')
         return res.end()
     }
     res.setHeader('Content-Type', 'text/html')
