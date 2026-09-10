@@ -108,3 +108,6 @@
 
 1. [33_M_search_in_rotated_sorted_array](../DSA/binary_search/33_M_search_in_rotated_sorted_array.py)
 1. [153_find_minimum_in_rotated_sorted_array](../DSA/binary_search/153_find_minimum_in_rotated_sorted_array.py)
+
+# Stack
+1. [1673_find_the_most_competitive_subsequence](../DSA/stack/1673_find_the_most_competitive_subsequence.py)
