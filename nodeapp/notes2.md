@@ -137,6 +137,86 @@ emitter.emit('greet', 'Priya');
 - **Blocking code** (like a long `for` loop, or a synchronous heavy computation, or `fs.readFileSync` on a huge file) **occupies the single thread**, so the event loop can't process anything else — no other requests, no other timers — until that blocking operation finishes.
 - This is why **understanding what's sync vs async matters so much in Node**: a single blocking call in a server can freeze the entire application for all connected users.
 
+### How it actually flows (with the Worker Pool)
+
+```
+Incoming Requests
+        |
+        v
+ [ Your Code ]  <-- runs on the Single JavaScript Thread
+        |
+        | (async call, e.g. fs.readFile)
+        v
+     "fs" ------ Send to ------> [ Worker Pool ] --> Different Thread(s)!
+        ^                              |                (does the heavy lifting)
+        |                              |
+        |                       Trigger Callback
+        |                              |
+        |                              v
+      Start -------------------> [ Event Loop ] -- Handle Event Callbacks
+```
+
+Walking through it step by step:
+
+1. **Incoming requests** land on your Node app and run on the **single JavaScript thread** — this is where `<Your Code>` executes.
+2. When your code calls something like `fs.readFile(...)`, Node doesn't run that operation on the JS thread itself. Instead, it's **sent to the Worker Pool** (a set of background threads managed by **libuv**, separate from the main JS thread).
+3. The Worker Pool hands the actual work off to **different thread(s)** to do the "heavy lifting" (e.g., reading from disk) — this happens **outside** the single JS thread, so your code keeps running without blocking.
+4. Once the Worker Pool finishes the operation, it **triggers a callback** back to the **Event Loop**.
+5. The Event Loop's job is to **handle event callbacks** — when the JS call stack is free, it takes that completed callback and pushes it back onto the single JS thread to run (e.g., your `(err, data) => {...}` callback finally executes with the file's contents).
+6. This loop (`Start → Worker Pool → Trigger Callback → Event Loop → back to Your Code`) repeats continuously for every async operation, which is what lets Node handle many concurrent I/O operations on just **one JS thread**.
+
+**Key distinction to remember for interviews:**
+> "JavaScript execution itself is single-threaded — there's only one thread running your actual code. But Node.js (via libuv) maintains a **separate Worker Pool** of threads behind the scenes to handle things like file system operations, DNS lookups, and some crypto operations. Your code never blocks waiting for these — it just gets notified via the event loop once the work is done."
+
+This is also why **blocking code is dangerous**: if you write something synchronous and heavy directly in `<Your Code>` (the single JS thread), there's no Worker Pool to offload it to — it sits there and blocks everything, including the Event Loop's ability to deliver callbacks that are already done and waiting.
+
+### The Event Loop's Phases (Full Cycle)
+
+The event loop isn't just one generic "check the queue" step — it actually cycles through **distinct phases**, each responsible for a specific kind of callback. One full cycle looks like this:
+
+```
+        ┌───────────────────────────┐
+        │           Timers          │  <-- Execute setTimeout, setInterval callbacks
+        └─────────────┬─────────────┘
+                       │
+        ┌─────────────▼─────────────┐
+        │      Pending Callbacks     │  <-- Execute I/O-related callbacks that were deferred
+        └─────────────┬─────────────┘
+                       │
+        ┌─────────────▼─────────────┐
+        │            Poll            │  <-- Retrieve new I/O events, execute their callbacks
+        └─────────────┬─────────────┘
+                       │
+        ┌─────────────▼─────────────┐
+        │            Check            │  <-- Execute setImmediate() callbacks
+        └─────────────┬─────────────┘
+                       │
+        ┌─────────────▼─────────────┐
+        │       Close Callbacks       │  <-- Execute all 'close' event callbacks
+        └─────────────┬─────────────┘
+                       │
+                (loop repeats back to Timers)
+
+        Exit condition: if refs == 0 (nothing left registered)
+                        --> process.exit
+```
+
+**Phase-by-phase breakdown:**
+
+1. **Timers** — executes callbacks scheduled by `setTimeout()` and `setInterval()` whose timer has expired.
+2. **Pending Callbacks** — executes certain I/O callbacks that were deferred to the next loop iteration (e.g., some system-level errors like TCP errors).
+3. **Poll** — the core phase: retrieves new I/O events (file reads, network requests, etc.) and executes their callbacks. If there's nothing to poll and no timers due, this phase may **block here waiting** for new events.
+4. **Check** — executes `setImmediate()` callbacks. These are designed to run **right after the poll phase completes**, regardless of timers.
+5. **Close Callbacks** — executes `'close'` event callbacks, e.g., `socket.on('close', ...)`.
+6. After Close Callbacks, the loop **jumps back to Timers** and the cycle repeats — as long as there's still something registered (`refs != 0`).
+7. **Exit condition**: once `refs == 0` — meaning no timers, no pending I/O, no open listeners left — Node calls **`process.exit`** and the program terminates.
+
+**Interview soundbite:**
+> "The event loop cycles through distinct phases each iteration — Timers, Pending Callbacks, Poll, Check, and Close Callbacks — each handling a specific category of callback. The Poll phase is where most I/O callbacks actually run. The loop keeps repeating as long as there's still something registered; once there's nothing left (refs == 0), Node exits via process.exit."
+
+**Common interview gotcha — `setTimeout(fn, 0)` vs `setImmediate(fn)`:**
+> `setTimeout(fn, 0)` runs in the **Timers** phase, while `setImmediate(fn)` runs in the **Check** phase, right after Poll. Inside an I/O callback (like `fs.readFile`'s callback), `setImmediate()` will *always* run before `setTimeout(fn, 0)`, because the loop is already past Timers and heading into Poll → Check. At the top level (outside any I/O callback), the order between them is *not guaranteed* — it depends on process performance/timing.
+
 ---
 
 ## Practice Questions & Answers
