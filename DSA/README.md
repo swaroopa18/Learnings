@@ -5,6 +5,7 @@
 3.  [977_squares_of_a_sorted_array](../DSA/two-pointers/977_squares_of_a_sorted_array.py)
 4.  [42_trapping_rain_water](../DSA/two-pointers/42_trapping_rain_water.py)
 5.  [763_partition_labels](../DSA/two-pointers/763_partition_labels.py)
+6.  [15_3sum](../DSA/two-pointers/15_3sum.py)
 
 # Array
 
