@@ -143,17 +143,69 @@ Dutch National Flag Algorithm (Optimal for this specific problem)
 """
 class Solution:
     def sortColors(self, nums: List[int]) -> None:
+
+        # Three pointers divide the array into four regions:
+        #
+        # [0 ... low-1]     -> all 0s
+        # [low ... mid-1]   -> all 1s
+        # [mid ... high]    -> unknown elements
+        # [high+1 ... n-1]  -> all 2s
+        #
+        # We keep processing the unknown region [mid ... high].
         low = mid = 0
         high = len(nums) - 1
-        
+
         while mid <= high:
+
+            # If the current element is 0,
+            # it belongs to the left (0s) region.
             if nums[mid] == 0:
+
+                # Swap the 0 with nums[low].
+                #
+                # Why is it safe to increment mid afterward?
+                # nums[low] is already inside the processed region
+                # [low ... mid-1], which contains only 1s.
+                #
+                # Therefore, after the swap:
+                # - 0 is placed correctly at low
+                # - 1 comes to mid, which is already known to be correct
                 nums[low], nums[mid] = nums[mid], nums[low]
+
                 low += 1
                 mid += 1
+
+            # If the current element is 1,
+            # it already belongs to the middle region.
             elif nums[mid] == 1:
+
+                # Nothing needs to be done.
+                # Simply mark this element as processed.
                 mid += 1
+
+            # If the current element is 2,
+            # it belongs to the right (2s) region.
             else:  # nums[mid] == 2
+
+                # Swap the 2 with nums[high] so that the 2
+                # moves to the right side.
+                #
+                # IMPORTANT:
+                # nums[high] is part of the UNKNOWN region,
+                # so it could be 0, 1, or 2.
+                #
+                # Therefore, after the swap, the new element
+                # at nums[mid] has NOT been processed yet.
                 nums[mid], nums[high] = nums[high], nums[mid]
+
                 high -= 1
-                # Don't increment mid here as we need to check the swapped element
+
+                # Do NOT increment mid here.
+                #
+                # The element that came from high into mid
+                # could be:
+                #   0 -> needs to be moved to the left
+                #   1 -> needs to be marked as processed
+                #   2 -> needs to be moved to the right again
+                #
+                # So we must process nums[mid] again.
