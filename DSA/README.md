@@ -6,6 +6,7 @@
 4.  [42_trapping_rain_water](../DSA/two-pointers/42_trapping_rain_water.py)
 5.  [763_partition_labels](../DSA/two-pointers/763_partition_labels.py)
 6.  [15_3sum](../DSA/two-pointers/15_3sum.py)
+7.  [283_move_zeros](../DSA/two-pointers/283_move_zeros.py)
 
 # Array
 
