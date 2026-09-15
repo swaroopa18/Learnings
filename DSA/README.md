@@ -113,3 +113,7 @@
 
 # Stack
 1. [1673_find_the_most_competitive_subsequence](../DSA/stack/1673_find_the_most_competitive_subsequence.py)
+
+
+# Sliding window
+1. [maximum_sum_subarray_of_size_k](../DSA/sliding_window/maximum_sum_subarray_of_size_k.py)
