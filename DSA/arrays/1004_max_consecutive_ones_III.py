@@ -8,24 +8,40 @@
 # ============================================================
 
 from typing import List
+from collections import deque
 
 # ============================================================
-# VARIANT 1: Track ones (your current solution)
+# VARIANT 1: Track ones
 # ============================================================
 # STYLE: Count what you WANT (1s), derive cost from it
-# FORMULA: zeros_in_window = window_size - ones
 #
-# Mental model: "I know how many good players I have,
-#                so bad players = total - good"
+# FORMULA:
+#   zeros_in_window = window_size - ones
+#
+# Mental model:
+#   "I know how many good players I have,
+#    so bad players = total - good."
+#
+# PATTERN:
+#   Very similar to LC 424 (Longest Repeating Character
+#   Replacement):
+#
+#       window_size - max_freq <= k
+#
+# Here:
+#
+#       window_size - ones <= k
+#
+# ============================================================
 
 class V1_TrackOnes:
     def longestOnes(self, nums: List[int], k: int) -> int:
         start, ones, max_len = 0, 0, 0
 
         for end, num in enumerate(nums):
-            ones += num                            # num is 0 or 1, elegant!
+            ones += num
 
-            while end - start + 1 - ones > k:     # zeros > k → shrink
+            while end - start + 1 - ones > k:
                 ones -= nums[start]
                 start += 1
 
@@ -33,18 +49,20 @@ class V1_TrackOnes:
 
         return max_len
 
-# ✅ Pros: mirrors LC 424 exactly (ones ↔ max_freq). Great pattern recognition.
-# ❌ Cons: cost formula (window_size - ones) feels indirect to some people.
-
 
 # ============================================================
-# VARIANT 2: Track zeros (flipped perspective)
+# VARIANT 2: Track zeros
 # ============================================================
 # STYLE: Count what you SPEND (0s directly)
-# FORMULA: if zeros > k → shrink
 #
-# Mental model: "I have a k-token budget.
-#                Every 0 I include spends one token."
+# FORMULA:
+#   zeros <= k
+#
+# Mental model:
+#   "I have a k-token budget.
+#    Every 0 I include spends one token."
+#
+# ============================================================
 
 class V2_TrackZeros:
     def longestOnes(self, nums: List[int], k: int) -> int:
@@ -52,31 +70,38 @@ class V2_TrackZeros:
 
         for end, num in enumerate(nums):
             if num == 0:
-                zeros += 1                  # spending a token
+                zeros += 1
 
-            while zeros > k:               # over budget → shrink
+            while zeros > k:
                 if nums[start] == 0:
-                    zeros -= 1             # refund a token
+                    zeros -= 1
                 start += 1
 
             max_len = max(max_len, end - start + 1)
 
         return max_len
 
-# ✅ Pros: condition (zeros > k) reads like plain English. Very beginner-friendly.
-# ❌ Cons: needs explicit if-check when shrinking. Slightly more verbose.
-
 
 # ============================================================
-# VARIANT 3: if instead of while (no re-shrink loop)
+# VARIANT 3: if instead of while
 # ============================================================
 # STYLE: Never shrink MORE than 1 step per iteration
-# KEY INSIGHT: window never needs to shrink by more than 1
-#              because end only moves 1 step at a time.
-#              So while → if is safe here!
 #
-# Mental model: "If the bus gets too full by 1 person,
-#                just drop 1 from the back. Never more."
+# KEY INSIGHT:
+#   end moves exactly one step at a time.
+#
+# Therefore, when the new element makes the window invalid,
+# we only need to move start forward by one.
+#
+# Mental model:
+#   "The window only gets one person bigger at a time.
+#    If it becomes invalid, remove one person."
+#
+# IMPORTANT:
+#   This is a specialized optimization for this problem.
+#   `while` is the safer general sliding-window habit.
+#
+# ============================================================
 
 class V3_IfShrink:
     def longestOnes(self, nums: List[int], k: int) -> int:
@@ -85,7 +110,7 @@ class V3_IfShrink:
         for end, num in enumerate(nums):
             ones += num
 
-            if end - start + 1 - ones > k:    # ← if, not while!
+            if end - start + 1 - ones > k:
                 ones -= nums[start]
                 start += 1
 
@@ -93,92 +118,160 @@ class V3_IfShrink:
 
         return max_len
 
-# ✅ Pros: fastest in practice (no inner loop). Very clean.
-# ✅ Window size never shrinks below best seen — same watermark idea as LC 424!
-# ❌ Cons: subtle — only works because end moves by 1 each step.
-#          Using while is safer habit for general sliding window problems.
-# 💡 Note: max_len = end - start + 1 always equals the current window size,
-#           which never shrinks → so max() is technically optional here,
-#           but keep it for clarity.
-
 
 # ============================================================
-# VARIANT 4: Deque-based (track zero indices)
+# VARIANT 4: Deque-based
 # ============================================================
-# STYLE: Store positions of 0s, use them to jump start pointer
-# FORMULA: if we've seen more than k zeros,
-#           jump start to just after the oldest zero
+# STYLE: Store positions of 0s
 #
-# Mental model: "Keep a waitlist of zero positions.
-#                When budget runs out, remove the oldest zero
-#                from the waitlist and move the bus door past it."
-
-from collections import deque
+# FORMULA:
+#   If we've seen more than k zeros,
+#   jump start to just after the oldest zero.
+#
+# Mental model:
+#   "Keep a waitlist of zero positions.
+#    When the budget runs out, remove the oldest zero
+#    and move the door past it."
+#
+# SPACE:
+#   O(k)
+#
+# ============================================================
 
 class V4_Deque:
     def longestOnes(self, nums: List[int], k: int) -> int:
-        zero_positions = deque()   # stores indices of 0s in current window
+        zero_positions = deque()
+
         start, max_len = 0, 0
 
         for end, num in enumerate(nums):
             if num == 0:
                 zero_positions.append(end)
 
-            if len(zero_positions) > k:          # too many zeros
-                start = zero_positions.popleft() + 1   # jump past oldest 0
+            if len(zero_positions) > k:
+                start = zero_positions.popleft() + 1
 
             max_len = max(max_len, end - start + 1)
 
         return max_len
 
-# ✅ Pros: start pointer jumps directly — no sliding one by one.
-#          Very readable: "pop oldest zero, start from next position."
-# ❌ Cons: O(k) space for the deque. Not O(1) anymore.
-#          Overkill for this problem, but great for understanding.
+
+# ============================================================
+# VARIANT 5: Track ones explicitly + zero budget
+# ============================================================
+# STYLE:
+#   Explicitly maintain:
+#
+#       count = number of 1s in current window
+#       zeros = number of 0s in current window
+#
+# KEY IDEA:
+#   When a new 0 arrives:
+#
+#       If zeros == k:
+#           shrink first to make room
+#
+#       Then add the new 0.
+#
+# The answer is directly:
+#
+#       count = number of 1s in current valid window
+#
+# Mental model:
+#   "I'm trying to maximize the number of 1s.
+#    I can afford at most k zeros.
+#    When another zero arrives, make room before adding it."
+#
+# IMPORTANT:
+#   Use `zeros == k`, NOT `zeros >= k`.
+#
+# Why?
+#   We're about to add a new zero.
+#   If we already have k zeros, we must free one slot first.
+#
+# This also handles k = 0 correctly.
+#
+# ============================================================
+
+class V5_TrackOnesExplicit:
+    def longestOnes(self, nums: List[int], k: int) -> int:
+        start = 0
+        max_count, count, zeros = 0, 0, 0
+
+        for i, num in enumerate(nums):
+
+            if num == 1:
+                count += 1
+
+            else:
+                # We are about to add another 0.
+                # If the zero budget is already full,
+                # shrink until one zero slot is available.
+                while zeros == k:
+                    if nums[start] == 0:
+                        zeros -= 1
+                    else:
+                        count -= 1
+
+                    start += 1
+
+                zeros += 1
+                count += 1
+
+            max_count = max(max_count, count)
+
+        return max_count
 
 
 # ============================================================
 # COMPARISON TABLE
 # ============================================================
 #
-#  Variant        What you track   Shrink   Space   Best for...
-#  ───────────── ──────────────── ──────── ─────── ─────────────────────────
-#  V1 TrackOnes  ones count        while    O(1)   LC 424 pattern recognition
-#  V2 TrackZeros zeros count       while    O(1)   Plain English readability
-#  V3 IfShrink   ones count        if       O(1)   Clean / interview-friendly
-#  V4 Deque      zero indices      if       O(k)   Intuitive jumping logic
+#  Variant        Tracks             Shrink   Space   Best for...
+#  ─────────────  ─────────────────  ───────  ──────  ─────────────────────
+#  V1             ones               while    O(1)    LC 424 pattern
+#  V2             zeros              while    O(1)    Plain English
+#  V3             ones               if       O(1)    Clean optimization
+#  V4             zero indices       if       O(k)    Visual/jump logic
+#  V5             ones + zeros       while    O(1)    Explicit ones count
 #
+#
+# ANSWER REPRESENTATION:
+#
+#  V1 → window length
+#  V2 → window length
+#  V3 → window length
+#  V4 → window length
+#  V5 → number of 1s
+#
+# ============================================================
+
+
 # ============================================================
 # WHICH ONE SHOULD YOU USE?
 # ============================================================
 #
-#  In an interview:     → V3 (if-shrink). Cleanest, fastest, easiest to explain.
-#  For pattern memory:  → V1 (track ones). Directly mirrors LC 424.
-#  For beginners:       → V2 (track zeros). Reads like plain English.
-#  For understanding:   → V4 (deque). Most visual, easiest to trace.
+# In an interview:
+#   → V3
+#      Cleanest and very concise.
+#
+# For pattern memory:
+#   → V1
+#      Mirrors LC 424 directly.
+#
+# For beginners:
+#   → V2
+#      `zeros > k` reads like plain English.
+#
+# For understanding the "jump":
+#   → V4
+#      Very visual, but uses O(k) space.
+#
+# For explicitly tracking the number of 1s:
+#   → V5
+#      `count` directly represents the answer.
+#
+# Overall recommendation:
+#   V1 or V3
 #
 # ============================================================
-# QUICK TEST — all variants should give same output
-# ============================================================
-if __name__ == "__main__":
-    tests = [
-        ([1,1,1,0,0,0,1,1,1,1,0], 2, 6),
-        ([0,0,1,1,0,0,1,1,1,0,1,1,0,0,0,1,1,1,1], 3, 10),
-        ([1,1,1], 0, 3),
-        ([0,0,0], 0, 0),
-        ([0,0,0], 3, 3),
-    ]
-
-    variants = [
-        ("V1 TrackOnes",  V1_TrackOnes()),
-        ("V2 TrackZeros", V2_TrackZeros()),
-        ("V3 IfShrink",   V3_IfShrink()),
-        ("V4 Deque",      V4_Deque()),
-    ]
-
-    for nums, k, expected in tests:
-        print(f"\nnums={nums}, k={k}, expected={expected}")
-        for name, sol in variants:
-            result = sol.longestOnes(nums, k)
-            status = "✅" if result == expected else "❌"
-            print(f"  {status} {name}: {result}")
