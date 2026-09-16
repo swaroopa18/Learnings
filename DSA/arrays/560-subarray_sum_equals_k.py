@@ -21,6 +21,11 @@ class Solution:
     #
     # Pros: Simple to understand, no extra space needed
     # Cons: Slow for large inputs
+    #
+    # DSA Buddy Point 🧠
+    # - We keep re-adding the same elements again and again for every new
+    #   start index — that repeated summation IS the bottleneck. If you're
+    #   redoing work you already did, ask: "can I remember it instead?"
     # ============================================================================
     def subarraySum_bruteforce(self, nums: List[int], k: int) -> int:
         count = 0
@@ -61,6 +66,14 @@ class Solution:
     #
     # Pros: Optimal time complexity, handles negative numbers
     # Cons: Uses extra space for hash map
+    #
+    # DSA Buddy Point 🧠
+    # - "Two running totals that differ by k → the stretch between them
+    #    sums to k." Convert "find a subarray" into "find two matching
+    #    prefix sums" — that's the whole trick behind this pattern.
+    # - The {0: 1} seed isn't a special case, it's just "prefix sum before
+    #   the array started" — always include it or you'll silently miss
+    #   subarrays that begin at index 0.
     # ============================================================================
     def subarraySum(self, nums: List[int], k: int) -> int:
         total_count = 0
@@ -118,4 +131,14 @@ class Solution:
 # Prefix Sum HashMap| O(n)    | O(n)  | Production code (OPTIMAL)
 #
 # Recommendation: Use the hash map approach for optimal performance
+# ============================================================================
+
+# ============================================================================
+# STRONG POINTS TO REMEMBER 🧠
+# ============================================================================
+# - "Subarray sum = k" → think prefix sums, not nested loops.
+# - Two prefix sums differing by k ⇒ the gap between them sums to k.
+# - Always seed the map with {0: 1} to catch subarrays starting at index 0.
+# - This pattern generalizes: any "contiguous chunk satisfies condition X"
+#   problem is a candidate for prefix sum + hashmap.
 # ============================================================================
