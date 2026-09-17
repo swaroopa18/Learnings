@@ -127,3 +127,4 @@
 2. [304_range_sum_query_2D_Immutable](../DSA/prefix_sum/304_range_sum_query_2D_Immutable.py)
 3. [303_range_sum_query_Immutable](../DSA/prefix_sum/303_range_sum_query_Immutable.py)
 4. [523_continuous_subarray_sum](../DSA/prefix_sum/523_continuous_subarray_sum.py)
+5. [974_subarray_dums_divisible_by_K](../DSA/prefix_sum/974_subarray_dums_divisible_by_K.py)
