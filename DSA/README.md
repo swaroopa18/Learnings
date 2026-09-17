@@ -124,4 +124,5 @@
 
 # Prefix sum
 1. [1314_matrix_block_sum](../DSA/prefix_sum/1314_matrix_block_sum.py)
-1. [304_range_sum_query_2D_Immutable](../DSA/prefix_sum/304_range_sum_query_2D_Immutable.py)
+2. [304_range_sum_query_2D_Immutable](../DSA/prefix_sum/304_range_sum_query_2D_Immutable.py)
+3. [303_range_sum_query_Immutable](../DSA/prefix_sum/303_range_sum_query_Immutable.py)
