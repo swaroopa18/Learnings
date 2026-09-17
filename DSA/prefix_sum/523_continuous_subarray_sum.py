@@ -88,6 +88,67 @@ subarray. Otherwise, only store the remainder if it's NEW (never
 overwrite an existing entry — keeping the earliest index is what
 maximizes future match potential).
 
+--------------------------------------------------------------------------------
+### 🔰 BEGINNER-FRIENDLY WALKTHROUGH
+--------------------------------------------------------------------------------
+If the "prefix sum mod k" idea feels abstract, build it up slowly:
+
+1.  **What's a prefix sum?**
+    `prefix[i]` = sum of all elements from index 0 up to i.
+    Example: nums = [23, 2, 4, 6, 7], prefix sums are
+    [23, 25, 29, 35, 42].
+
+2.  **Why do we care about the sum of a subarray?**
+    The sum of any subarray nums[i+1 .. j] can be written as
+    `prefix[j] - prefix[i]`. So instead of adding up a chunk of the
+    array every time, we can get any subarray's sum by subtracting two
+    prefix sums. This is the classic "prefix sum" trick used to avoid
+    recomputation.
+
+3.  **Why remainders (mod k) instead of the raw prefix sums?**
+    We don't actually need to know the subarray sum itself — we only
+    need to know IF it's divisible by k. A number is divisible by k
+    exactly when its remainder mod k is 0. So instead of asking
+    "is `prefix[j] - prefix[i]` divisible by k?", we can ask the
+    equivalent, easier question: "do `prefix[j]` and `prefix[i]` leave
+    the SAME remainder when divided by k?" If they do, their
+    difference is guaranteed to be a clean multiple of k. Try it with
+    real numbers: 29 % 5 == 4 and 4 % 5 == 4 — same remainder — and
+    indeed 29 - 4 = 25, which is divisible by 5.
+
+4.  **Why a hash map?**
+    We walk through the array once, and at each index we compute
+    `prefix % k`. We want to know: "have we seen this exact remainder
+    before, at some earlier index?" A hash map lets us check that in
+    O(1) instead of re-scanning everything we've seen so far.
+
+5.  **Why store only the index, and only the FIRST time we see a
+    remainder?**
+    We're not trying to find the sum — we already know it'll be a
+    multiple of k. We just need to know the two index positions are at
+    least 2 apart (subarray length >= 2). Keeping the *earliest* index
+    for each remainder gives any future match the biggest possible gap,
+    so it's the safest choice — it never causes us to miss a valid
+    answer, and overwriting it with a later index only shrinks that
+    gap.
+
+6.  **Why seed the map with `{0: -1}`?**
+    Imagine nums = [5, 5] and k = 5. The prefix sum after index 1 is
+    10, and 10 % 5 == 0 — meaning the subarray from the very start is
+    already a multiple of k. To detect this "starts-from-index-0" case
+    with the same logic as everything else, we pretend a remainder of
+    0 was already seen at index -1 (i.e., "before the array began").
+    That way index 1 sees remainder 0 already in the map at -1, and
+    `1 - (-1) = 2 >= 2`, so it correctly returns True.
+
+7.  **Putting it together, one line at a time (see code below):**
+    - `prefix += num` → keep a running total as we scan left to right.
+    - `key = prefix % k` → reduce that running total to "just the
+      remainder," which is all we actually need.
+    - `if key in hmap` → have we seen this remainder before?
+      - if yes, and the two indices are far enough apart, we're done.
+      - if no, remember this index as the first time we saw it.
+
 ### Why does it work?
 Same-remainder prefix sums are exactly the mathematical condition for "the
 subarray between them sums to a multiple of k." Using the hash map to
@@ -124,16 +185,29 @@ remainder-to-index mappings. This is the accepted optimal solution.
 
 
 def check_subarray_sum(nums: list[int], k: int) -> bool:
+    # hmap maps: remainder (prefix sum % k) -> earliest index it was seen at.
+    # Seed with {0: -1} so a prefix that's ALREADY a multiple of k (starting
+    # from index 0) is correctly detected as if remainder 0 occurred "before
+    # the array started."
     hmap = {0: -1}
-    prefix = 0
+    prefix = 0  # running sum of nums[0..i], updated as we scan left to right
     for i, num in enumerate(nums):
-        prefix += num
-        key = prefix % k
+        prefix += num          # step 1: extend the running prefix sum
+        key = prefix % k       # step 2: we only care about the remainder mod k
+
         if key in hmap:
+            # We've seen this remainder before at index hmap[key].
+            # Equal remainders => everything between the two indices sums
+            # to a multiple of k. Just need the gap to be >= 2 (subarray
+            # length requirement).
             if i - hmap[key] >= 2:
                 return True
+            # else: gap too small, but keep the EARLIEST index as-is —
+            # do NOT overwrite, since that would only shrink future gaps.
         else:
+            # First time seeing this remainder — record it.
             hmap[key] = i
+
     return False
 
 
