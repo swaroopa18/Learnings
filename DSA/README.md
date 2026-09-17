@@ -121,3 +121,6 @@
 3. [713_subarray_product_less_than_K](../DSA/sliding_window/713_subarray_product_less_than_K.py)
 4. [239_sliding_window_maximum](../DSA/sliding_window/239_sliding_window_maximum.py)
 5. [209_minimum_size_subarray_sum](../DSA/sliding_window/209_minimum_size_subarray_sum.py)
+
+# Prefix sum
+1. [1314_matrix_block_sum](../DSA/prefix_sum/1314_matrix_block_sum.py)
