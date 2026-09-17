@@ -15,7 +15,7 @@
 3.  [455-assign-cookies](../DSA/arrays/455-assign-cookies.py)
 4.  [238-product-of-array-except-itself](../DSA/arrays/238-product-of-array-except-itself.py)
 5.  [134-gas-station](../DSA/arrays/134-M-gas-station.py)
-6.  [560-subarray_sum_equals_k](../DSA/arrays/560-subarray_sum_equals_k.py)
+6.  [1004_max_consecutive_ones_III](../DSA/arrays/1004_max_consecutive_ones_III.py)
 7.  [169_majority_element](../DSA/arrays/169_majority_element.py)
 8.  [53_maximum_subarray](../DSA/arrays/53_maximum_subarray.py)
 9.  [724_find_pivot_index](../DSA/arrays/724_find_pivot_index.py)
@@ -26,7 +26,6 @@
 14. [1423_maximum_points_you_can_obtain_from_cards](../DSA/arrays/1423_maximum_points_you_can_obtain_from_cards.py)
 15. [76_minimum_window_substring](../DSA/arrays/76_minimum_window_substring.py)
 16. [424_longest_repeating_character_replacement](../DSA/arrays/424_longest_repeating_character_replacement.py)
-17. [1004_max_consecutive_ones_III](../DSA/arrays/1004_max_consecutive_ones_III.py)
 
 # String
 
@@ -128,3 +127,4 @@
 3. [303_range_sum_query_Immutable](../DSA/prefix_sum/303_range_sum_query_Immutable.py)
 4. [523_continuous_subarray_sum](../DSA/prefix_sum/523_continuous_subarray_sum.py)
 5. [974_subarray_dums_divisible_by_K](../DSA/prefix_sum/974_subarray_dums_divisible_by_K.py)
+6. [560_subarray_sum_equals_k](../DSA/prefix_sum/560_subarray_sum_equals_k.py)
