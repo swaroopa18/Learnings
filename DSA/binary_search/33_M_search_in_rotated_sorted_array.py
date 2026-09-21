@@ -19,28 +19,43 @@ INTERVIEW CLARIFYING QUESTIONS
 """
 
 # ================================================================================
-# 🔑🔑🔑  THE #1 RULE FOR BINARY-SEARCH BOUNDARIES  🔑🔑🔑
+# 🔑🔑🔑  STRONG POINTS FOR ROTATED SORTED ARRAY PROBLEMS  🔑🔑🔑
 # ================================================================================
 """
     ┌─────────────────────────────────────────────────────────────────────┐
     │                                                                     │
-    │   If your answer is the FIRST INVALID / first position AFTER       │
-    │   the boundary  ──────────────────────────────────>  return `l`    │
-    │                                                                     │
-    │   If your answer is the LAST VALID / position BEFORE               │
-    │   the boundary  ──────────────────────────────────>  return `r`    │
+    │   At ANY mid, at least ONE half is normally sorted (no seam in it) │
+    │   — because rotation creates exactly ONE seam, which can only      │
+    │   live in ONE of the two halves.                                   │
     │                                                                     │
     └─────────────────────────────────────────────────────────────────────┘
 
-THIS PROBLEM is a bit different from mySqrt / searchInsert: we're not
-searching for a BOUNDARY between valid/invalid regions — we're searching
-for an EXACT MATCH (target's index), returning it the moment it's found,
-with -1 if the loop exhausts without a match. So neither `l` nor `r` is
-the "final answer" here in the boundary sense — this problem is really
-"standard binary search for an exact value," just with an extra decision
-step (which half is sorted?) bolted on before the usual `<`/`>` compare.
-Good to recognize WHEN the l/r-boundary rule applies (finding a boundary)
-vs. when it doesn't (finding an exact match) — this problem is the latter.
+Memorize these as REFLEXES for any rotated-sorted-array problem:
+
+1. **Rotation = exactly ONE seam.** A big value immediately followed by a
+   smaller one, exactly once in the whole array. Every rotated-array
+   binary search is really just "figure out which side of that seam
+   you're on" before doing anything else.
+
+2. **Per step, ask ONE question: which half is normally sorted?** Compare
+   `nums[mid]` to `nums[l]` (as this solution does) — if
+   `nums[mid] >= nums[l]`, the LEFT half [l..mid] is seam-free and
+   normally sorted; otherwise the RIGHT half [mid..r] is.
+
+3. **Once you know the sorted half, check if target's VALUE fits its
+   range.** If yes, search inside it with ordinary binary search
+   reasoning. If no, target must be hiding in the OTHER (still rotated)
+   half — move there and repeat the same one question.
+
+4. **This is "find an exact match," not "find a boundary."** Unlike
+   mySqrt/searchInsert, you return the match's index the instant you find
+   it (or -1 if the range is exhausted) — there's no l/r crossing-point
+   convention to apply here.
+
+5. **The "which half is sorted?" check (comparing to nums[r] instead of
+   nums[l]) is EXACTLY the logic behind LC 153** ("Find Minimum in
+   Rotated Sorted Array"). That problem's binary search IS this
+   problem's pivot-finding building block, isolated on its own.
 """
 
 # ================================================================================
