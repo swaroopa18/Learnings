@@ -114,6 +114,7 @@
 4. [35_search_insert_position](../DSA/binary_search/35_search_insert_position.py)
 4. [162_find_peak_element](../DSA/binary_search/162_find_peak_element.py)
 4. [278_first_bad_version](../DSA/binary_search/278_first_bad_version.py)
+4. [34_find_first_and_last_position_of_element_in_sorted_array](../DSA/binary_search/34_find_first_and_last_position_of_element_in_sorted_array.py)
 
 # Stack
 1. [1673_find_the_most_competitive_subsequence](../DSA/stack/1673_find_the_most_competitive_subsequence.py)
