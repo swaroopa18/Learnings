@@ -22,6 +22,30 @@ INTERVIEW CLARIFYING QUESTIONS
 """
 
 # ================================================================================
+# 🔑🔑🔑  THE #1 RULE FOR BINARY-SEARCH BOUNDARIES  🔑🔑🔑
+# ================================================================================
+"""
+    ┌─────────────────────────────────────────────────────────────────────┐
+    │                                                                     │
+    │   If your answer is the FIRST INVALID / first position AFTER       │
+    │   the boundary  ──────────────────────────────────>  return `l`    │
+    │                                                                     │
+    │   If your answer is the LAST VALID / position BEFORE               │
+    │   the boundary  ──────────────────────────────────>  return `r`    │
+    │                                                                     │
+    └─────────────────────────────────────────────────────────────────────┘
+
+THIS PROBLEM (mySqrt): we want the LARGEST value still satisfying
+`mid*mid <= x` — that's the LAST VALID position before crossing into
+"too big" territory -> return `r`.
+
+Memorize this rule as a REFLEX, not a per-problem derivation. The moment
+you know which side of the boundary your answer sits on, you know
+instantly which variable to return — no need to re-trace the whole loop
+every time to figure it out.
+"""
+
+# ================================================================================
 # BEGINNER-FRIENDLY WALKTHROUGH 🌱
 # ================================================================================
 """
@@ -358,6 +382,8 @@ internalized this problem (not just memorized the code):
       value was ever too big). Returning `l` would overshoot the floor by
       exactly 1 in most cases. Try tracing x=15 with `l` instead of `r`
       to see it land on 4 (wrong) instead of 3 (correct).
+      🔑 Rule check: our answer is the LAST VALID value before the
+      boundary -> the rule says return `r`. This IS that rule in action.
 
 3. Q: Why is `mid = (l + r) // 2` and not `mid = (l + r) / 2`?
    A: We're searching over INTEGERS (possible integer answers), so `mid`
