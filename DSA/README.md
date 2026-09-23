@@ -117,6 +117,7 @@
 7. [34_find_first_and_last_position_of_element_in_sorted_array](../DSA/binary_search/34_find_first_and_last_position_of_element_in_sorted_array.py)
 8. [find_floor_and_ceil_in_a_sorted_array](../DSA/binary_search/find_floor_and_ceil_in_a_sorted_array.py)
 9. [875_koko_eating_bananas](../DSA/binary_search/875_koko_eating_bananas.py)
+10. [1011_capacity_to_ship_packages_within_D_days](../DSA/binary_search/1011_capacity_to_ship_packages_within_D_days.py)
 
 # Stack
 1. [1673_find_the_most_competitive_subsequence](../DSA/stack/1673_find_the_most_competitive_subsequence.py)
