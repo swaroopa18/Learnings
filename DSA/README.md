@@ -119,6 +119,7 @@
 9. [875_koko_eating_bananas](../DSA/binary_search/875_koko_eating_bananas.py)
 10. [1011_capacity_to_ship_packages_within_D_days](../DSA/binary_search/1011_capacity_to_ship_packages_within_D_days.py)
 11. [1870_min_speed_to_arrive_on_time](../DSA/binary_search/1870_min_speed_to_arrive_on_time.py)
+12. [1482_minimum_number_of_days_to_make_m_bouquets](../DSA/binary_search/1482_minimum_number_of_days_to_make_m_bouquets.py)
 
 # Stack
 1. [1673_find_the_most_competitive_subsequence](../DSA/stack/1673_find_the_most_competitive_subsequence.py)
