@@ -121,6 +121,7 @@
 11. [1870_min_speed_to_arrive_on_time](../DSA/binary_search/1870_min_speed_to_arrive_on_time.py)
 12. [1482_minimum_number_of_days_to_make_m_bouquets](../DSA/binary_search/1482_minimum_number_of_days_to_make_m_bouquets.py)
 13. [24_search_a_2d_matrix](../DSA/binary_search/24_search_a_2d_matrix.py)
+14. [240_search_a_2d_matrix_ii](../DSA/binary_search/240_search_a_2d_matrix_ii.py)
 
 # Stack
 1. [1673_find_the_most_competitive_subsequence](../DSA/stack/1673_find_the_most_competitive_subsequence.py)
