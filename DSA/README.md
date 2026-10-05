@@ -132,6 +132,7 @@
 5. [901_online_stock_span](../DSA/stack/901_online_stock_span.py)
 6. [735_asteroid_collision](../DSA/stack/735_asteroid_collision.py)
 7. [844_backspace_string_compare](../DSA/stack/844_backspace_string_compare.py)
+8. [1544_make_the_string_great](../DSA/stack/1544_make_the_string_great.py)
 
 # Sliding window
 1. [maximum_sum_subarray_of_size_k](../DSA/sliding_window/maximum_sum_subarray_of_size_k.py)
