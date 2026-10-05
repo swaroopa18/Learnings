@@ -130,6 +130,7 @@
 3. [503_next_greater_element_II](../DSA/stack/503_next_greater_element_II.py)
 4. [739_daily_temperatures](../DSA/stack/739-daily-temperatures.py)
 5. [901_online_stock_span](../DSA/stack/901_online_stock_span.py)
+6. [735_asteroid_collision](../DSA/stack/735_asteroid_collision.py)
 
 # Sliding window
 1. [maximum_sum_subarray_of_size_k](../DSA/sliding_window/maximum_sum_subarray_of_size_k.py)
