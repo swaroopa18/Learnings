@@ -135,6 +135,7 @@
 8. [1544_make_the_string_great](../DSA/stack/1544_make_the_string_great.py)
 9. [84_largest_rectangle_in_histogram](../DSA/stack/84_largest_rectangle_in_histogram.py)
 10. [85_maximal_rectangle](../DSA/stack/85_maximal_rectangle.py)
+11. [394_decode_string](../DSA/stack/394_decode_string.py)
 
 # Sliding window
 1. [maximum_sum_subarray_of_size_k](../DSA/sliding_window/maximum_sum_subarray_of_size_k.py)
