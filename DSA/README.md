@@ -137,6 +137,7 @@
 10. [85_maximal_rectangle](../DSA/stack/85_maximal_rectangle.py)
 11. [394_decode_string](../DSA/stack/394_decode_string.py)
 12. [150_evaluate_reverse_polish_notation](../DSA/stack/150_evaluate_reverse_polish_notation.py)
+13. [227_basic_calculator_II](../DSA/stack/227_basic_calculator_II.py)
 
 # Sliding window
 1. [maximum_sum_subarray_of_size_k](../DSA/sliding_window/maximum_sum_subarray_of_size_k.py)
