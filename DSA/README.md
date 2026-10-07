@@ -140,6 +140,7 @@
 13. [227_basic_calculator_II](../DSA/stack/227_basic_calculator_II.py)
 14. [921_minimum_add_to_make_parentheses_valid](../DSA/stack/921_minimum_add_to_make_parentheses_valid.py)
 15. [856_score_of_parentheses](../DSA/stack/856_score_of_parentheses.py)
+16. [32_longest_valid_parentheses](../DSA/stack/32_longest_valid_parentheses.py)
 
 # Sliding window
 1. [maximum_sum_subarray_of_size_k](../DSA/sliding_window/maximum_sum_subarray_of_size_k.py)
