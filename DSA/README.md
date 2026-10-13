@@ -156,3 +156,6 @@
 4. [523_continuous_subarray_sum](../DSA/prefix_sum/523_continuous_subarray_sum.py)
 5. [974_subarray_dums_divisible_by_K](../DSA/prefix_sum/974_subarray_dums_divisible_by_K.py)
 6. [560_subarray_sum_equals_k](../DSA/prefix_sum/560_subarray_sum_equals_k.py)
+
+# Recursion
+1. [factorial](../DSA/recursion/factorial.py)
