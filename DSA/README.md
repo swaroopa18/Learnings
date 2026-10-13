@@ -159,3 +159,5 @@
 
 # Recursion
 1. [factorial](../DSA/recursion/factorial.py)
+2. [palindrome_number](../DSA/recursion/palindrome_number.py)
+3. [50_pow_xy](../DSA/recursion/50_pow_xy.py)
