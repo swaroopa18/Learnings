@@ -109,22 +109,14 @@ class Solution3:
         return max_len
 
 
-# Approach 4: Most Pythonic (using max with generator)
-class SolutionPythonic:
+class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
-        """
-        Most concise while maintaining clarity.
-        """
-        if not s:
-            return 0
-        
-        seen = {}
-        left = max_len = 0
-        
-        for right, char in enumerate(s):
-            if char in seen and seen[char] >= left:
-                left = seen[char] + 1
-            seen[char] = right
-            max_len = max(max_len, right - left + 1)
-        
+        max_len, hset, start = 0, set(), 0
+        last_seen = {}
+
+        for i in range(len(s)):
+            if s[i] in last_seen:
+                start = max(start, last_seen[s[i]] + 1)
+            last_seen[s[i]] = i
+            max_len = max(max_len, i - start + 1)
         return max_len
