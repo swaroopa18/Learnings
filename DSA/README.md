@@ -50,6 +50,7 @@
 8.  [142-linked-list-cycle-II](../DSA/LinkedList/M-142-linked-list-cycle-II.py)
 9.  [160-intersection-node](../DSA/LinkedList/E-160-intersection-node.py)
 10. [234-palindrome-linked-list.py](../DSA/LinkedList/E-234-palindrome-linked-list.py)
+11. [707_Design_Linked_List](../DSA/LinkedList/707_Design_Linked_List.py)
 
 # Backtracking
 
