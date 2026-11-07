@@ -110,6 +110,78 @@ class Solution3:
         
         return headA  # Intersection or None
 
+
+# ============================================================================
+# APPROACH 4: LENGTH DIFFERENCE WITHOUT COUNTING LENGTHS (RUNNING-OUT TRICK)
+# ============================================================================
+class Solution4:
+    def getIntersectionNode(
+        self, headA: ListNode, headB: ListNode
+    ) -> Optional[ListNode]:
+        """
+        Same idea as Approach 3 (align the longer list, then walk together),
+        but the length difference is found WITHOUT computing either length.
+
+        Idea:
+          1. Walk h1 along A and h2 along B at the same speed until ONE of
+             them runs out. The other pointer still has exactly
+             |lenA - lenB| nodes left in front of it. That leftover count is
+             the difference we need.
+          2. Start two fresh pointers (ha, hb) at the heads. Walk the leftover
+             pointer and its list's fresh pointer together until the leftover
+             pointer runs out. This moves the fresh pointer of the LONGER list
+             forward by exactly the difference. (Only one of the two loops
+             below actually runs, the other sees h == None immediately.)
+          3. Now ha and hb are the same distance from the end of their lists,
+             so walk them together. The first node where ha == hb is the
+             intersection; if they never meet, they both fall off the end.
+
+        Example (A is longer by 1):
+            A: 1 -> 2 -> 7 -> 8 -> 9        (len 5)
+            B:      4 -> 7 -> 8 -> 9        (len 4, shares 7 -> 8 -> 9)
+            Step 1: h1 and h2 move together; h2 runs out first, h1 has 1 node left.
+            Step 2: ha moves 1 step (from node 1 to node 2). hb stays at 4.
+            Step 3: (2, 4) -> (7, 7) equal, return node 7.
+
+        TC: O(m + n) - at most about 2 * max(m, n) pointer moves in total
+        SC: O(1)     - only a handful of pointers, no counters or sets
+
+        Compared to Approach 3:
+          + No helper function and no length variables to keep in sync.
+          + Slightly fewer passes (the lengths are never fully counted).
+          - A little harder to read: it works by "leftover" nodes instead of
+            explicit numbers. Approach 3 is easier to explain in an interview.
+
+        Notes:
+          - Comparing with == on nodes is identity here because ListNode
+            doesn't define __eq__. `is` would be the more explicit choice.
+          - If either list is empty, step 1 ends at once and step 3 never
+            runs, so the final `return None` handles it with no special case.
+        """
+        # Step 1: walk both until one list ends; the other has `diff` nodes left
+        h1, h2 = headA, headB
+        while h1 and h2:
+            h1 = h1.next
+            h2 = h2.next
+
+        # Step 2: advance the longer list's fresh pointer by `diff`
+        ha, hb = headA, headB
+        while h1 and ha:
+            ha = ha.next
+            h1 = h1.next
+        while h2 and hb:
+            hb = hb.next
+            h2 = h2.next
+
+        # Step 3: both are now equally far from the end, walk together
+        while ha and hb:
+            if ha == hb:
+                return ha  # Intersection node
+            ha = ha.next
+            hb = hb.next
+        return None  # No intersection
+
+
 # ============================================================================
 # WHY THE TWO-POINTER APPROACH WORKS (THE MAGIC!)
 # ============================================================================
@@ -215,6 +287,10 @@ Return None (no intersection)
 ║                    ║       ║       ║ ✓ Easy to understand           ║
 ║                    ║       ║       ║ ✗ Requires 3 passes            ║
 ║                    ║       ║       ║ ✓ Good alternative approach    ║
+╠════════════════════╬═══════╬═══════╬════════════════════════════════╣
+║ Length Diff        ║ O(m+n)║ O(1)  ║ ✓ No length counters/helper    ║
+║ (Running-Out)      ║       ║       ║ ✓ Fewer passes than Approach 3 ║
+║                    ║       ║       ║ ✗ Subtler "leftover" logic     ║
 ╚════════════════════╩═══════╩═══════╩════════════════════════════════╝
 
 INTERVIEW STRATEGY:
