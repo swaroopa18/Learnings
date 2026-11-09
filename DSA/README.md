@@ -52,6 +52,7 @@
 10. [234-palindrome-linked-list.py](../DSA/LinkedList/E-234-palindrome-linked-list.py)
 11. [707_Design_Linked_List](../DSA/LinkedList/707_Design_Linked_List.py)
 12. [328_odd_even_linked_list](../DSA/LinkedList/328_odd_even_linked_list.py)
+13. [61_Rotate_List](../DSA/LinkedList/61_Rotate_List.py)
 
 # Backtracking
 
