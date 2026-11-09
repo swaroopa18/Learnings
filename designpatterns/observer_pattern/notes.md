@@ -3,6 +3,10 @@
 ## Definition
 A **behavioral design pattern** that defines a **one-to-many dependency**: when one object (the *Subject*) changes state, all its dependents (*Observers*) are notified and updated automatically.
 
+Imagine you’re building a stock dashboard. The price ticker arrives over a WebSocket, and several unrelated pieces of UI need to react: a chart redraws, a row in a watchlist flashes green or red, a portfolio total recalculates, and an audit log records the tick. The WebSocket has no business knowing about any of those consumers. What it needs is a way to say “here is a new tick” and let interested parties decide what that means for them.
+
+That is the Observer pattern. A subject maintains a list of observers and broadcasts to them when something changes. New observers can attach themselves whenever they like; existing observers can detach when they’re done. Nothing in the subject is hard‑coded to a specific consumer.
+
 Also known as: **Publish-Subscribe**, **Dependents**, **Listener**.
 
 ## Intent
