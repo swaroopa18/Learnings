@@ -53,6 +53,7 @@
 11. [707_Design_Linked_List](../DSA/LinkedList/707_Design_Linked_List.py)
 12. [328_odd_even_linked_list](../DSA/LinkedList/328_odd_even_linked_list.py)
 13. [61_Rotate_List](../DSA/LinkedList/61_Rotate_List.py)
+14. [2130_Maximum_Twin_Sum_of_a_Linked_List](../DSA/LinkedList/2130_Maximum_Twin_Sum_of_a_Linked_List.py)
 
 # Backtracking
 
