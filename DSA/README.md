@@ -103,6 +103,7 @@
 4.  [E-104-maximum-depth-of-binary-tree](../DSA/tree/E-104-maximum-depth-of-binary-tree.py)
 5.  [M-102-binary-tree-level-order-traversal](../DSA/tree/M-102-binary-tree-level-order-traversal.py)
 6.  [E-101-symmetric-tree.py](../DSA/tree/E-101-symmetric-tree.py)
+7.  [543_Diameter_of_Binary_Tree](../DSA/tree/543_Diameter_of_Binary_Tree.py)
 
 # Heaps
 
