@@ -249,6 +249,64 @@ class SolutionMorris:
 
 
 # ================================================================================
+# WHY IS APPROACH #1 (CONCATENATION) SLOWER THAN APPROACH #2 (SHARED LIST)? 🧠
+# ================================================================================
+"""
+Both approaches make the SAME number of recursive calls (one per node, plus
+one per None child) -> O(n) calls. The difference is the WORK DONE PER CALL.
+
+### Approach #2 (shared list): O(1) work per node
+    res.append(node.val)
+- `append` writes ONE element at the end of the one shared list, amortized
+  O(1).
+- Every value is written exactly once -> n writes total -> O(n).
+
+### Approach #1 (concatenation): O(size of subtree) work per node
+    return inorder(left) + [root.val] + inorder(right)
+- In Python, `a + b` does NOT modify `a`; it allocates a brand-new list and
+  COPIES every element of `a` and `b` into it.
+- The expression `left + [val] + right` is evaluated as `(left + [val]) + right`,
+  so it creates TWO new lists:
+    1. left + [val]            -> copies len(left) + 1 elements
+    2. (that result) + right   -> copies len(left) + 1 + len(right) elements
+- So at each node we copy roughly its entire subtree (about 2 * subtree_size
+  element-copies).
+- The same element is then copied AGAIN by its parent, and AGAIN by the
+  grandparent, ... all the way up to the root. A value sitting at depth d
+  gets copied about once per ancestor -> ~d times (times 2 for the two
+  concatenations).
+
+### Total cost = sum over all nodes of (subtree size) = sum over all values
+### of (their depth) -> O(n * h)
+
+Worked examples:
+- SKEWED tree (every node has only a left child, h = n):
+      the call at depth i returns a list of size n - i
+      copies = n + (n-1) + (n-2) + ... + 1 = n(n+1)/2  -> O(n^2)
+      e.g. n = 10,000  ->  ~50 million element copies instead of 10,000 appends
+- BALANCED tree (h = log n):
+      every level of the tree copies about n elements in total, and there are
+      log n levels -> O(n log n)  (still worse than O(n))
+
+### Extra hidden costs of #1
+- Lots of short-lived temporary lists -> memory allocation + garbage
+  collection overhead.
+- Worse cache behaviour from constantly allocating and copying.
+
+### One-line summary
+"Approach #1 recopies the same elements at every ancestor level
+(O(n*h), O(n^2) when skewed); Approach #2 writes each element once into a
+single shared list (O(n))."
+
+### Interview tip
+Same trap appears in other recursive list-building solutions in Python
+(e.g. `path + [node.val]` in root-to-leaf path problems, `left + right`
+merges). Passing a shared list/accumulator and appending (and popping when
+backtracking) avoids repeated copying.
+"""
+
+
+# ================================================================================
 # MIND MAP 🧠
 # ================================================================================
 """
