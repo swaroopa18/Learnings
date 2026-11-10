@@ -1583,15 +1583,3 @@ SELECT first_name, last_name, gender, date_of_birth, email
 FROM person
 WHERE gender = 'Female';
 ```
-
-### 25.8 Common insert errors
-
-| Error | Cause |
-|-------|-------|
-| `null value in column "x" violates not-null constraint` | A `NOT NULL` column was left out or set to NULL |
-| `duplicate key value violates unique constraint` | Value already exists in a `UNIQUE` or primary key column |
-| `violates check constraint` | Value breaks a `CHECK` rule |
-| `value too long for type character varying(n)` | Text longer than the `VARCHAR(n)` limit |
-| `invalid input syntax for type date` | Wrong date format (use `YYYY-MM-DD`) |
-
----
