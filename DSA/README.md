@@ -57,6 +57,9 @@
 15. [445_add_two_numbers_II](../DSA/LinkedList/445_add_two_numbers_II.py)
 16. [1019_Next_Greater_Node_In_Linked_List](../DSA/LinkedList/1019_Next_Greater_Node_In_Linked_List.py)
 
+# Double LinkedList
+1. [146_LRU_Cache](../DSA/DLinkedList/146_LRU_Cache.py)
+
 # Backtracking
 
 1.  [17-letter-combination](../DSA/backtrack/17-M-letter-combination.py)
