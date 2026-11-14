@@ -104,6 +104,7 @@
 5.  [M-102-binary-tree-level-order-traversal](../DSA/tree/M-102-binary-tree-level-order-traversal.py)
 6.  [E-101-symmetric-tree.py](../DSA/tree/E-101-symmetric-tree.py)
 7.  [543_Diameter_of_Binary_Tree](../DSA/tree/543_Diameter_of_Binary_Tree.py)
+8.  [110_Balanced_Binary_Tree](../DSA/tree/110_Balanced_Binary_Tree.py)
 
 # Heaps
 
