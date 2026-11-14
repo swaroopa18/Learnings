@@ -58,7 +58,7 @@
 16. [1019_Next_Greater_Node_In_Linked_List](../DSA/LinkedList/1019_Next_Greater_Node_In_Linked_List.py)
 
 # Double LinkedList
-1. [146_LRU_Cache](../DSA/DLinkedList/146_LRU_Cache.py)
+1. [146_LRU_Cache](../DSA//senior_level_ques/146_LRU_Cache.py)
 
 # Backtracking
 
