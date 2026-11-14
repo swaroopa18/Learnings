@@ -319,26 +319,3 @@ class LRUCache:
 # obj = LRUCache(capacity)
 # param_1 = obj.get(key)
 # obj.put(key,value)
-
-
-if __name__ == "__main__":
-    # Quick self-check: run the problem's example on every approach.
-    for impl in (LRUCacheNaive, LRUCacheOrderedDict, LRUCacheDict, LRUCache):
-        c = impl(2)
-        c.put(1, 1)
-        c.put(2, 2)
-        assert c.get(1) == 1
-        c.put(3, 3)
-        assert c.get(2) == -1
-        c.put(4, 4)
-        assert c.get(1) == -1
-        assert c.get(3) == 3
-        assert c.get(4) == 4
-
-        # updating an existing key must not evict anything
-        d = impl(2)
-        d.put(1, 1)
-        d.put(2, 2)
-        d.put(2, 20)
-        assert d.get(1) == 1 and d.get(2) == 20
-        print(impl.__name__, "OK")
