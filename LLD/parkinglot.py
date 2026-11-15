@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 from enum import Enum
 from datetime import datetime
 import threading
@@ -17,12 +18,13 @@ class Vehicle:
     self.vehicle_type = vehicle_type
 #----------------------#
 class ParkingSlot:
-  def __init__(self, slot_number, slot_type):
+  def __init__(self, slot_number, slot_type, distance):
     if not isinstance(slot_type, VehicleType):
       raise TypeError("slot_type must be VehicleType")
     self.slot_number = slot_number
     self.slot_type = slot_type
     self.__is_free = True
+    self.distance = distance
 
   def park(self):
     if not self.__is_free:
@@ -47,6 +49,38 @@ class ParkingSlot:
   def is_free(self):
         return self.__is_free
 
+
+#----------------------#
+class ParkingStrategy(ABC):
+    @abstractmethod
+    def find_spot(self, vehicle, spots):
+        pass
+
+class FirstAvailableStrategy(ParkingStrategy):
+    def find_spot(self, vehicle, spots):
+        available_spots = [
+            spot for spot in spots
+            if spot.is_free() and spot.can_fit(vehicle.vehicle_type)
+        ]
+        if vehicle.vehicle_type == VehicleType.ELECTRIC_CAR:
+            for spot in available_spots:
+                if spot.slot_type == VehicleType.ELECTRIC_CAR:
+                    return spot
+        return available_spots[0] if available_spots else None
+
+class NearestSpotStrategy(ParkingStrategy):
+    def find_spot(self, vehicle, spots):
+        compatible = [
+            spot for spot in spots
+            if spot.is_free()
+            and spot.can_fit(vehicle.vehicle_type)
+        ]
+
+        return min(
+            compatible,
+            key=lambda spot: spot.distance,
+            default=None
+        )
 #----------------------#
 class Ticket:
     def __init__(self, vehicle, slot):
@@ -59,7 +93,8 @@ class Ticket:
 class FeeCalculator:
     PRICE = {
             VehicleType.BIKE: 10,
-            VehicleType.CAR: 20
+            VehicleType.CAR: 20,
+            VehicleType.ELECTRIC_CAR: 30
         }
     def calculate(self, ticket, exit_time):
         vehicle_type = ticket.vehicle.vehicle_type
@@ -71,15 +106,16 @@ class FeeCalculator:
 
 #----------------------#
 class ParkingLot:
-    def __init__(self, slots):
+    def __init__(self, slots, parking_strategy):
         self.slots = slots
         self.active_tickets = {}
+        self.active_vechicles = {}
         self.fee_calculator = FeeCalculator()
+        self.parking_strategy = parking_strategy
         self.locks = {
             vehicle_type: threading.Lock()
             for vehicle_type in VehicleType
         }
-
 
     def find_available_slot(self, vehicle_type):
         for slot in self.slots:
@@ -90,8 +126,11 @@ class ParkingLot:
     def park_vehicle(self, vehicle):
         lock = self.locks[vehicle.vehicle_type]
         with lock:
-            slot = self.find_available_slot(
-                vehicle.vehicle_type
+            if vehicle.number in self.active_vechicles:
+                return None
+            slot = self.parking_strategy.find_spot(
+                vehicle,
+                self.slots
             )
 
             if slot is None:
@@ -101,6 +140,7 @@ class ParkingLot:
 
             ticket = Ticket(vehicle, slot)
             self.active_tickets[ticket.ticket_id] = ticket
+            self.active_vechicles[vehicle.number] = ticket
 
             return ticket
 
@@ -119,6 +159,7 @@ class ParkingLot:
         ticket.slot.free()
 
         del self.active_tickets[ticket_id]
+        del self.active_vechicles[ticket.vehicle.number]
 
         print("Vehicle exited successfully!")
         print(f"Parking Fee: Rs. {fee}")
