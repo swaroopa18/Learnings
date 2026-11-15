@@ -17,14 +17,30 @@ class Vehicle:
     self.number = number
     self.vehicle_type = vehicle_type
 #----------------------#
+class ParkingFloor:
+    def __init__(self, floor_no, spots):
+        self.floor_no = floor_no
+        self.spots = spots
+
+    def available_slots(self, vehicle_type=None):
+        available = []
+
+        for slot in self.spots:
+            if slot.is_free():
+                if vehicle_type is None or slot.can_fit(vehicle_type):
+                    available.append(slot)
+
+        return available
+#----------------------#
 class ParkingSlot:
-  def __init__(self, slot_number, slot_type, distance):
+  def __init__(self, slot_number, slot_type, distance, floor_number):
     if not isinstance(slot_type, VehicleType):
       raise TypeError("slot_type must be VehicleType")
     self.slot_number = slot_number
     self.slot_type = slot_type
     self.__is_free = True
     self.distance = distance
+    self.floor_number = floor_number
 
   def park(self):
     if not self.__is_free:
@@ -53,34 +69,44 @@ class ParkingSlot:
 #----------------------#
 class ParkingStrategy(ABC):
     @abstractmethod
-    def find_spot(self, vehicle, spots):
+    def find_spot(self, vehicle, floors):
         pass
 
 class FirstAvailableStrategy(ParkingStrategy):
-    def find_spot(self, vehicle, spots):
-        available_spots = [
-            spot for spot in spots
-            if spot.is_free() and spot.can_fit(vehicle.vehicle_type)
-        ]
-        if vehicle.vehicle_type == VehicleType.ELECTRIC_CAR:
-            for spot in available_spots:
-                if spot.slot_type == VehicleType.ELECTRIC_CAR:
-                    return spot
-        return available_spots[0] if available_spots else None
+    def find_spot(self, vehicle, floors):
+        for floor in floors:
+            available_spots = [
+                spot for spot in floor.spots
+                if spot.is_free() and spot.can_fit(vehicle.vehicle_type)
+            ]
+
+            if vehicle.vehicle_type == VehicleType.ELECTRIC_CAR:
+                for spot in available_spots:
+                    if spot.slot_type == VehicleType.ELECTRIC_CAR:
+                        return spot
+
+            if available_spots:
+                return available_spots[0]
+
+        return None
 
 class NearestSpotStrategy(ParkingStrategy):
-    def find_spot(self, vehicle, spots):
-        compatible = [
-            spot for spot in spots
-            if spot.is_free()
-            and spot.can_fit(vehicle.vehicle_type)
-        ]
+    def find_spot(self, vehicle, floors):
+        compatible = []
+
+        for floor in floors:
+            compatible.extend([
+                spot for spot in floor.spots
+                if spot.is_free()
+                and spot.can_fit(vehicle.vehicle_type)
+            ])
 
         return min(
             compatible,
             key=lambda spot: spot.distance,
             default=None
         )
+    
 #----------------------#
 class Ticket:
     def __init__(self, vehicle, slot):
@@ -106,8 +132,8 @@ class FeeCalculator:
 
 #----------------------#
 class ParkingLot:
-    def __init__(self, slots, parking_strategy):
-        self.slots = slots
+    def __init__(self, floors, parking_strategy):
+        self.floors = floors
         self.active_tickets = {}
         self.active_vechicles = {}
         self.fee_calculator = FeeCalculator()
@@ -117,12 +143,6 @@ class ParkingLot:
             for vehicle_type in VehicleType
         }
 
-    def find_available_slot(self, vehicle_type):
-        for slot in self.slots:
-          if slot.is_free() and slot.can_fit(vehicle_type):
-            return slot
-        return None
-
     def park_vehicle(self, vehicle):
         lock = self.locks[vehicle.vehicle_type]
         with lock:
@@ -130,7 +150,7 @@ class ParkingLot:
                 return None
             slot = self.parking_strategy.find_spot(
                 vehicle,
-                self.slots
+                self.floors
             )
 
             if slot is None:
@@ -169,9 +189,7 @@ class ParkingLot:
     def available_slots(self, vehicle_type=None):
         available = []
 
-        for slot in self.slots:
-            if slot.is_free():
-                if vehicle_type is None or slot.can_fit(vehicle_type):
-                    available.append(slot)
+        for floor in self.floors:
+            available.extend(floor.available_slots(vehicle_type))
 
         return available
