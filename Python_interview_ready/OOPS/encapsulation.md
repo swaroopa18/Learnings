@@ -70,3 +70,11 @@ One important Python caveat: `_balance` is still accessible directly, so a calle
 > Encapsulation is an OOP principle that bundles data and the methods that operate on it into a single unit (class), while controlling access to the data to maintain the object's integrity and prevent invalid state changes.
 
 **Remember this sentence: Encapsulation is not just about hiding data; it is about controlling how data is accessed and modified to maintain correctness.**
+
+
+# Senior talking points
+
+- “Tell, don’t ask”: expose behavior (withdraw), not raw state to be manipulated externally.
+- Encapsulation also covers immutability (@dataclass(frozen=True), __slots__, tuples). It makes objects safe to share and hash.
+- Descriptors are the machinery behind property, methods, and classmethod (__get__/__set__).
+- Leaky encapsulation: returning an internal mutable list lets callers mutate your state. Return a copy or a tuple.
