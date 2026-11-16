@@ -15,12 +15,36 @@ class Channel(ABC):
     def name(self):
         pass
 
+    def send(self, user, message) -> SendResult:
+        recipient = self.get_recipient(user)
+
+        try:
+            self._deliver(recipient, message)
+
+            return SendResult(
+                True,
+                self.name,
+                recipient
+            )
+
+        except Exception as e:
+            return SendResult(
+                False,
+                self.name,
+                recipient,
+                str(e)
+            )
+
     @abstractmethod
     def get_context(self, user):
         pass
 
     @abstractmethod
-    def send(self, user, message) -> SendResult:
+    def get_recipient(self, user) -> str:
+        pass
+
+    @abstractmethod
+    def _deliver(self, recipient: str, message: str) -> None:
         pass
 
 class Email(Channel):
@@ -30,24 +54,13 @@ class Email(Channel):
             "name": user.name,
             "email": user.email
         }
-    def send(self, user, message):
-        recipient = user.email
-        try:
-            print(f"Sending Email to {recipient}: {message}")
-            return SendResult(
-                success=True,
-                channel=self.name,
-                recipient=recipient,
-            )
-        except Exception as e:
-            return SendResult(
-                success=False,
-                channel=self.name,
-                recipient=recipient,
-                error=str(e)
-            )
+    def _deliver(self, recipient, message):
+        print(f"Sending Email to {recipient}: {message}")
 class SMS(Channel):
     name = "sms"
+
+    def get_recipient(self, user):
+        return user.phone_number
 
     def get_context(self, user):
         return {
@@ -55,55 +68,23 @@ class SMS(Channel):
             "phone": user.phone_number
         }
     
-    def send(self, user, message):
-        recipient = user.phone_number
-
-        try:
-            # Replace this with actual SMS provider integration
-            print(f"Sending SMS to {recipient}: {message}")
-
-            return SendResult(
-                success=True,
-                channel=self.name,
-                recipient=recipient
-            )
-
-        except Exception as e:
-            return SendResult(
-                success=False,
-                channel=self.name,
-                recipient=recipient,
-                error=str(e)
-            )
+    def _deliver(self, recipient, message):
+        print(f"Sending SMS to {recipient}: {message}")
 
 class Slack(Channel):
-    name = 'slack'
+    name = "slack"
+
+    def get_recipient(self, user):
+        return user.slack_id
 
     def get_context(self, user):
         return {
-            "name": user.name,
-            "phone": user.phone_number
+            "name": user.name
         }
 
-    def send(self, user, message):
-        recipient = user.name
-
-        try:
-            print(f"Sending Slack to {recipient}: {message}")
-
-            return SendResult(
-                success=True,
-                channel=self.name,
-                recipient=recipient
-            )
-
-        except Exception as e:
-            return SendResult(
-                success=False,
-                channel=self.name,
-                recipient=recipient,
-                error=str(e)
-            )
+    def _deliver(self, recipient, message):
+        print(f"Sending Slack message to {recipient}: {message}")
+        
 #----------------#
 class MessageTemplate:
     def __init__(self, templates):
