@@ -38,7 +38,7 @@ function App() {
         debounceSearch(searchText)
 
         return (() => debounceSearch.cancel())
-    }, [searchText])
+    }, [searchText, debounceSearch])
 
     return (
         <div style={styles.main}>
