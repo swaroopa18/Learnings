@@ -92,6 +92,7 @@
 15. [279_perfect_squares](../DSA/DP/279_perfect_squares.py)
 16. [55_jump_game](../DSA/DP/55_jump_game.py)
 17. [45_jump_game_II](../DSA/DP/45_jump_game_II.py)
+18. [45_jump_game_II](../DSA/DP/91_Decode_Ways.py)
 
 # Graphs
 
