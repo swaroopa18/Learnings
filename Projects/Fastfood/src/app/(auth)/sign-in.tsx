@@ -3,25 +3,27 @@ import CustomInput from '@/components/CustomInput'
 import { Link, router } from 'expo-router'
 import { useState } from 'react'
 import { Alert, Text, View } from 'react-native'
+import { signin } from '../../../lib/appwrite'
 
 const SignIn = () => {
   const [isSubmitting, setisSubmitting] = useState(false)
   const [form, setform] = useState({ email: '', password: '' })
 
-  const submit = () => {
+  const submit = async () => {
     if (!form.email || !form.password){
-      Alert.alert('Please enter valid details')
+      Alert.alert('Error', 'Please enter valid details')
       return;
     }
 
     setisSubmitting(true)
 
     try {
-      //appwrite signin function
-      Alert.alert('Signed in successfully')
-      router.replace('/')
+      await signin({ email: form.email, password: form.password })
+      Alert.alert('Success', 'Signed in successfully')
+      router.replace('/(tabs)')
     } catch (error: any) {
-      Alert.alert('Error', error)
+      console.error('Sign in error:', error);
+      Alert.alert('Error', error?.message || 'Failed to sign in')
     } finally {
       setisSubmitting(false)
     }
@@ -30,7 +32,7 @@ const SignIn = () => {
   return (
     <View>
       <CustomInput label='Email' value={form.email} onChangeText={(text) => setform(prev => ({ ...prev, email: text }))} />
-      <CustomInput label='Password' secureTextEntry={true} onChangeText={(text) => setform(prev => ({ ...prev, password: text }))} />
+      <CustomInput label='Password' value={form.password}  secureTextEntry={true} onChangeText={(text) => setform(prev => ({ ...prev, password: text }))} />
       <CustomButton title='Sign In' isLoading={isSubmitting} onPress={submit} />
 
       <View className='flex flex-row justify-center mt-5 gap-2'>
