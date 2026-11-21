@@ -30,4 +30,12 @@
     .offer-card {
         @apply w-full h-48 rounded-xl overflow-hidden shadow-lg flex items-center gap-5;
     }
+
+    .cart-btn {
+        @apply flex-row items-center justify-center bg-primary px-3.5 py-2 rounded-full relative gap-x-2;
+    }
+
+    .cart-badge {
+        @apply absolute -top-1.5 -right-1.5 bg-error rounded-full size-5 flex items-center justify-center border border-white;
+    }
 }

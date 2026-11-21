@@ -1,3 +1,4 @@
+import CartButton from '@/components/CartButton';
 import cn from 'clsx';
 import React from "react";
 import { FlatList, Image, Pressable, Text, TouchableOpacity, View } from "react-native";
@@ -40,7 +41,7 @@ export default function App() {
           </TouchableOpacity>
         </View>
 
-        <Text>Cart</Text>
+        <CartButton />
       </View>} />
     </SafeAreaView>
   );
