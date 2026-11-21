@@ -5,8 +5,10 @@ import { FlatList, Image, Pressable, Text, TouchableOpacity, View } from "react-
 import { SafeAreaView } from "react-native-safe-area-context";
 import { offers } from '../../../constants';
 import "../global.css";
+import useAuthStore from '../../../store/auth.store';
 
 export default function App() {
+  const { user } = useAuthStore()
   return (
     <SafeAreaView className='flex-1 bg-white'>
       <FlatList data={offers} keyExtractor={(item) => item.id.toString()} renderItem={({ item, index }) => {

@@ -2,6 +2,7 @@ import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
 
+import useAuthStore from '../../store/auth.store';
 import './global.css';
 
 export const unstable_settings = {
@@ -9,7 +10,8 @@ export const unstable_settings = {
 };
 
 export default function RootLayout() {
-  const [isLoaded, error] = useFonts({
+  const { fetchAuthenticatedUsers, isLoading } = useAuthStore();
+  const [isFontsLoaded, error] = useFonts({
     "TWKLausanne-Light": require("../../assets/fonts/TWKLausanne-Light.ttf"),
     "TWKLausanne-Regular": require("../../assets/fonts/TWKLausanne-Regular.ttf"),
     "TWKLausanne-Semibold": require("../../assets/fonts/TWKLausanne-Semibold.ttf"),
@@ -19,12 +21,16 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (error) throw error;
-    if (isLoaded) SplashScreen.hideAsync()
-  }, [])
+    if (isFontsLoaded) SplashScreen.hideAsync();
+  }, [error, isFontsLoaded]);
+
+  useEffect(() => {
+    fetchAuthenticatedUsers();
+  }, []);
+
+  if (!isFontsLoaded || isLoading) return null;
+
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="(tabs)" />
-      <Stack.Screen name="(auth)" />
-    </Stack>
+    <Stack screenOptions={{ headerShown: false }}/>
   );
 }
