@@ -4,6 +4,10 @@ import { useEffect } from "react";
 
 import './global.css';
 
+export const unstable_settings = {
+  anchor: '(tabs)',
+};
+
 export default function RootLayout() {
   const [isLoaded, error] = useFonts({
     "TWKLausanne-Light": require("../../assets/fonts/TWKLausanne-Light.ttf"),
@@ -17,9 +21,10 @@ export default function RootLayout() {
     if (error) throw error;
     if (isLoaded) SplashScreen.hideAsync()
   }, [])
-  return <Stack
-    screenOptions={{
-      headerShown: false,
-    }}
-  />;
+  return (
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="(auth)" />
+    </Stack>
+  );
 }
