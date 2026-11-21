@@ -1,16 +1,48 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   // NOTE: Update this to include the paths to all files that contain Nativewind classes.
-  content: ["./src/app/**/*.{js,jsx,ts,tsx}", "./components/**/*.{js,jsx,ts,tsx}"],
+  content: ["./src/**/*.{js,jsx,ts,tsx}", "./app/**/*.{js,jsx,ts,tsx}", "./components/**/*.{js,jsx,ts,tsx}"],
   presets: [require("nativewind/preset")],
   theme: {
     extend: {
       colors: {
-        primary: "#413DFF",
+        primary: {
+          DEFAULT: "#413DFF",
+          100: "#413DFF",
+          80: "#413DFFCC",
+          60: "#413DFF99",
+          40: "#413DFF66",
+          20: "#413DFF33",
+        },
+        secondary: {
+          DEFAULT: "#FF7622",
+          100: "#FF7622",
+          80: "#FF7622CC",
+          60: "#FF762299",
+          40: "#FF762266",
+          20: "#FF762233",
+        },
+        dark: {
+          DEFAULT: "#181C2E",
+          100: "#181C2E",
+          80: "#181C2ECC",
+          60: "#181C2E99",
+          40: "#181C2E66",
+          20: "#181C2E33",
+          200: "#121212",
+          300: "#000000",
+        },
         error: {
+          DEFAULT: "#C70808",
           default: "#C70808",
+          100: "#C70808",
+          80: "#C70808CC",
+          60: "#C7080899",
+          40: "#C7080866",
+          20: "#C7080833",
         },
         black: {
+          DEFAULT: "#000000",
           100: "#000000",
           80: "#000000CC",
           60: "#00000099",
@@ -19,6 +51,16 @@ module.exports = {
           3: "#00000003",
         },
         grey: {
+          DEFAULT: "#808080",
+          700: "#4D4D4D",
+          600: "#666666",
+          500: "#808080",
+          300: "#B3B3B3",
+          100: "#E6E6E6",
+          50: "#F5F5F5",
+        },
+        gray: {
+          DEFAULT: "#808080",
           700: "#4D4D4D",
           600: "#666666",
           500: "#808080",
@@ -27,6 +69,7 @@ module.exports = {
           50: "#F5F5F5",
         },
         white: {
+          DEFAULT: "#FFFFFF",
           100: "#FFFFFF",
           80: "#FFFFFFCC",
           70: "#FFFFFF70",
@@ -36,6 +79,7 @@ module.exports = {
           54: "#FFFFFF1A",
         },
         red: {
+          DEFAULT: "#F83A3A",
           100: "#F83A3A",
           80: "#F83A3ACC",
           60: "#F83A3A99",
@@ -43,6 +87,7 @@ module.exports = {
           20: "#F83A3A33",
         },
         green: {
+          DEFAULT: "#22C55E",
           100: "#22C55E",
           80: "#22C55ECC",
           60: "#22C55E99",
@@ -50,6 +95,7 @@ module.exports = {
           20: "#22C55E33",
         },
         smoke: {
+          DEFAULT: "#EDEDED",
           100: "#EDEDED",
           80: "#EDEDEDCC",
           60: "#EDEDED99",
@@ -57,6 +103,7 @@ module.exports = {
           20: "#EDEDED33",
         },
         lightGrey: {
+          DEFAULT: "#F2F2F2",
           100: "#F2F2F2",
           80: "#F2F2F2CC",
           60: "#F2F2F299",
@@ -64,14 +111,19 @@ module.exports = {
           20: "#F2F2F233",
         },
         blue: {
+          DEFAULT: "#518AE7",
           100: "#518AE7",
           80: "#518AE7CC",
           60: "#518AE799",
           40: "#518AE766",
           20: "#518AE733",
         },
-        pink: "#E61C5C",
+        pink: {
+          DEFAULT: "#E61C5C",
+          100: "#E61C5C",
+        },
         charcoal: {
+          DEFAULT: "#282828",
           100: "#282828",
           80: "#282828CC",
           60: "#28282899",
@@ -79,6 +131,7 @@ module.exports = {
           20: "#28282833",
         },
         success: {
+          DEFAULT: "#07C799",
           light: "#C7F4E9",
           100: "#07C799",
           80: "#07C799CC",
@@ -87,10 +140,21 @@ module.exports = {
           20: "#07C79933",
         },
         navy: {
+          DEFAULT: "#0C1C3C",
           100: "#0C1C3C",
         },
         orange: {
+          DEFAULT: "#CC6600",
           100: "#CC6600",
+        },
+        yellow: {
+          DEFAULT: "#FFC700",
+          100: "#FFF8E1",
+          500: "#FFC700",
+        },
+        warning: {
+          DEFAULT: "#F59E0B",
+          100: "#FEF3C7",
         },
       },
       fontFamily: {

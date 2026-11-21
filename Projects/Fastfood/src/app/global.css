@@ -3,6 +3,29 @@
 @tailwind utilities;
 
 @layer components {
+    .h1-bold {
+        @apply text-2xl font-bold;
+    }
+
+    .paragraph-bold {
+        @apply text-base font-bold;
+    }
+
+    .small-bold {
+        @apply text-xs font-bold;
+    }
+
+    .flex-between {
+        @apply flex justify-between items-center;
+    }
+
+    .flex-center {
+        @apply flex justify-center items-center;
+    }
+
+    .flex-start {
+        @apply flex justify-start items-start;
+    }
 
     .offer-card {
         @apply w-full h-48 rounded-xl overflow-hidden shadow-lg flex items-center gap-5;
