@@ -54,4 +54,8 @@
     .custom-btn {
         @apply w-full h-14 bg-primary rounded-full flex-row items-center justify-center gap-x-2 shadow-md;
     }
+
+    .tab-icon {
+        @apply w-full h-full flex flex-col items-center justify-center gap-1 min-w-[60px];
+    }
 }
